@@ -1,0 +1,6 @@
+C:\Users\dpothier\Documents\AntennaHousePdf-Dev\AntennaHousePdfTest\bin\Debug\AntennaHousePdfTest.dll
+C:\Users\dpothier\Documents\AntennaHousePdf-Dev\AntennaHousePdfTest\bin\Debug\AntennaHousePdfTest.pdb
+C:\Users\dpothier\Documents\AntennaHousePdf-Dev\AntennaHousePdfTest\bin\Debug\Microsoft.VisualStudio.QualityTools.UnitTestFramework.dll
+C:\Users\dpothier\Documents\AntennaHousePdf-Dev\AntennaHousePdfTest\obj\Debug\AntennaHousePdfTest.csprojResolveAssemblyReference.cache
+C:\Users\dpothier\Documents\AntennaHousePdf-Dev\AntennaHousePdfTest\obj\Debug\AntennaHousePdfTest.dll
+C:\Users\dpothier\Documents\AntennaHousePdf-Dev\AntennaHousePdfTest\obj\Debug\AntennaHousePdfTest.pdb
