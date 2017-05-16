@@ -61,14 +61,11 @@ namespace AntennaHousePdf.Models
     public class AntennaPdf
     {    
         public string Footer { get; set;}
-        public string Xsl { get; set; }
         public string Project { get; set; }
         public string SubProject { get; set; }
         public string SubProjectSB { get; set; }
         public string Volume { get; set; }
-        public string PublishMethod { get; set; }
         public HttpPostedFileBase Xml { get; set; }
-        public Outputs Output { get; set; }
         [DisplayFormat(ConvertEmptyStringToNull = false)]
         public List<HttpPostedFileBase> Graphics {get;set; }
         public List<HttpPostedFileBase> XmlFiles { get; set; }
@@ -88,7 +85,6 @@ namespace AntennaHousePdf.Models
             XsltCompiler compiler = processor.NewXsltCompiler();
             string xmlpath = ConfigurationManager.AppSettings["root"] + ConfigurationManager.AppSettings["tempxml"];
             string xslpath = ConfigurationManager.AppSettings["projectDirectory"] + this.Project + "/" + ((subProject !=null) ? subProject+"/" : "") + this.Project + "_" + "master.xsl";
-            MessageBox.Show(xslpath);
             string psmi = ConfigurationManager.AppSettings["projectDirectory"] + this.Project + "/" + (subProject != null ? subProject + "/" : "") + "psmi.xsl";
             
             // Create a Processor instance.

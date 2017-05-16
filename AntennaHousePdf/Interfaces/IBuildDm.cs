@@ -4,7 +4,7 @@ using System.Linq;
 using System.Web;
 using System.Xml;
 
-namespace AntennaHousePdf.Library
+namespace AntennaHousePdf.Interfaces
 {
     public interface IBuildDm
     {

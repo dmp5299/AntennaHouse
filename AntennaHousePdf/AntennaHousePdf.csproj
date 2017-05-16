@@ -186,8 +186,6 @@
     <None Include="Scripts\jquery-1.10.2.intellisense.js" />
     <Content Include="icons\rcmIcon.ico" />
     <Content Include="images\RCMTLogo.jpg" />
-    <Content Include="jquerySpinner\jquery.loading.min.js" />
-    <Content Include="jquerySpinner\loading.min.css" />
     <Content Include="jquery\jquery-3.1.1.min.js" />
     <Content Include="jquery\jquery-ui.css" />
     <Content Include="jquery\jquery-ui.js" />
@@ -205,34 +203,28 @@
     <Content Include="Scripts\jquery.validate.unobtrusive.js" />
     <Content Include="Scripts\jquery.validate.unobtrusive.min.js" />
     <Content Include="Scripts\modernizr-2.6.2.js" />
-    <Content Include="StyleSheets\service_bulletin.xsl" />
     <Content Include="Web.config">
       <SubType>Designer</SubType>
     </Content>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="App_Start\RouteConfig.cs" />
-    <Compile Include="BuildDmBuilder.cs" />
+    <Compile Include="Factories\BuildDmBuilder.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
-    <Compile Include="HomeControllerTest.cs" />
     <Compile Include="Library\DmReferences.cs" />
-    <Compile Include="Library\IBuildDm.cs" />
+    <Compile Include="Interfaces\IBuildDm.cs" />
     <Compile Include="Library\EquipDesignatorDm.cs" />
-    <Compile Include="Models\test.cs" />
     <Compile Include="SaxonExtensions\FileChek.cs" />
     <Compile Include="Library\Foldouts.cs" />
     <Compile Include="SaxonExtensions\getGraphicPath.cs" />
     <Compile Include="Library\MergePm.cs" />
     <Compile Include="Library\NumIndexDm.cs" />
-    <Compile Include="Library\Pdf.cs" />
-    <Compile Include="Library\Sb.cs" />
     <Compile Include="SaxonExtensions\GetReferences.cs" />
     <Compile Include="SaxonExtensions\SbFooter.cs" />
     <Compile Include="Models\AntennaPdf.cs" />
-    <Compile Include="Library\CmmPdf.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="SaxonExtensions\TitlePage.cs" />
   </ItemGroup>
@@ -257,9 +249,6 @@
     <Folder Include="bootstrap\css\" />
     <Folder Include="bootstrap\fonts\" />
     <Folder Include="bootstrap\js\" />
-    <Folder Include="Controllers\DTD\" />
-    <Folder Include="Interfaces\" />
-    <Folder Include="Xml\" />
   </ItemGroup>
   <ItemGroup>
     <WCFMetadata Include="Service References\" />
