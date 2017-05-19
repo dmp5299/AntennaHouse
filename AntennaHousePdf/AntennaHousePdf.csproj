@@ -211,12 +211,19 @@
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="Factories\BuildDmBuilder.cs" />
     <Compile Include="Controllers\HomeController.cs" />
+    <Compile Include="Factories\FileUploadFactory.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
-    <Compile Include="Library\DmReferences.cs" />
     <Compile Include="Interfaces\IBuildDm.cs" />
+    <Compile Include="Interfaces\IUploadFiles.cs" />
+    <Compile Include="Library\CreateDocument.cs" />
+    <Compile Include="Library\GetPdf.cs" />
     <Compile Include="Library\EquipDesignatorDm.cs" />
+    <Compile Include="Library\MyXmlUrlResolver.cs" />
+    <Compile Include="Library\PdfFile.cs" />
+    <Compile Include="Library\UploadGraphicFiles.cs" />
+    <Compile Include="Library\UploadXmlFiles.cs" />
     <Compile Include="SaxonExtensions\FileChek.cs" />
     <Compile Include="Library\Foldouts.cs" />
     <Compile Include="SaxonExtensions\getGraphicPath.cs" />

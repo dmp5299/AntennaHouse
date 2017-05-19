@@ -122,6 +122,11 @@
                         document.getElementById("CMMproject").style.display = "none";
                         document.getElementById("Rolls Royceproject").style.display = "none";
                     }
+                    else if (project.options[project.selectedIndex].value == "PWC") {
+                        document.getElementById("SBProject").style.display = "none";
+                        document.getElementById("CMMproject").style.display = "none";
+                        document.getElementById("Rolls Royceproject").style.display = "none";
+                    }
                 }
 
                 function checkFiles(){
@@ -139,6 +144,12 @@
                     {
                         document.getElementById(project.options[project.selectedIndex].value + "project").style.display = 'block';
                         document.getElementById("Rolls Royceproject").style.display = 'none';
+                        document.getElementById("SBProject").style.display = 'none';
+                        document.getElementById("Footer").style.display = 'none';
+                    }
+                    else if (project.options[project.selectedIndex].value == "PWC") {
+                        document.getElementById("Rolls Royceproject").style.display = 'none';
+                        document.getElementById("CMMproject").style.display = 'none';
                         document.getElementById("SBProject").style.display = 'none';
                         document.getElementById("Footer").style.display = 'none';
                     }
