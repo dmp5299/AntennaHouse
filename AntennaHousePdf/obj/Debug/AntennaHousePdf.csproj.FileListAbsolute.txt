@@ -192,3 +192,5 @@ C:\Users\dpothier\Documents\AntennaHousePdf-Dev\AntennaHousePdf\obj\Debug\Antenn
 C:\Users\dpothier\Documents\AntennaHousePdf-Dev\AntennaHousePdf\obj\Debug\AntennaHousePdf.dll
 C:\Users\dpothier\Documents\AntennaHousePdf-Dev\AntennaHousePdf\obj\Debug\AntennaHousePdf.pdb
 C:\Users\dpothier\Documents\AntennaHousePdf-Dev\AntennaHousePdf\bin\Microsoft.VisualStudio.QualityTools.UnitTestFramework.dll
+C:\Users\dpothier\Documents\AntennaHousePdf-Dev\AntennaHousePdf\bin\AntennaHouseBusinessLayer.dll
+C:\Users\dpothier\Documents\AntennaHousePdf-Dev\AntennaHousePdf\bin\AntennaHouseBusinessLayer.pdb

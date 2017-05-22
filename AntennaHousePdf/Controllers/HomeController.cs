@@ -5,6 +5,7 @@ using System.Web;
 using System.Web.Mvc;
 using AntennaHousePdf.Models;
 using AntennaHousePdf.Library;
+using AntennaHouseBusinessLayer.Library;
 using System.IO;
 using XfoDotNetCtl;
 using System.Windows.Forms;
@@ -19,7 +20,7 @@ using Ionic.Zip;
 using System.Drawing;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System.Xml.Linq;
-using AntennaHousePdf.Factories;
+using AntennaHouseBusinessLayer.Factories;
 
 namespace AntennaHousePdf.Controllers
 {
@@ -65,7 +66,6 @@ namespace AntennaHousePdf.Controllers
                             string[] filesEntries = Directory.GetFiles(Session["UserId"].ToString());
                             foreach (string fileEntry in filesEntries)
                             {
-                                MessageBox.Show(fileEntry+" "+pdfParams.Project+" "+pdfParams.SubProjectSB);
                                 byte[] doc = doc1.SaxonBuild(fileEntry,pdfParams.Project, pdfParams.SubProjectSB);
                                 var pdfDoc = doc;
                                 string[] xml = fileEntry.Split('\\');

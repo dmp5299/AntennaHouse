@@ -3,7 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using AntennaHousePdf.Models;
-using AntennaHousePdf.Interfaces;
+using AntennaHouseBusinessLayer.Interfaces;
+using AntennaHouseBusinessLayer.Library;
+using AntennaHouseBusinessLayer.Factories;
 using System.Xml;
 using System.IO;
 using System.Reflection;
@@ -96,7 +98,7 @@ namespace AntennaHousePdf.Library
         public PdfFile createDocument()
         {
             //upload xml files and graphics to server
-            uploadFiles();
+            uploadFiles(); 
             //check xml files count. if its more than one you're doing a merge, if not create the pdf
             if (antennaPdf.XmlFiles.Count == 1)
             {
@@ -121,7 +123,7 @@ namespace AntennaHousePdf.Library
                 xmlFile1 = xmlFile1.Replace(".xml", "");
                 xmlFile1 = xmlFile1.Replace(".XML", "") + ".pdf";
                 FileContentResult file = new FileContentResult(doc, "application/pdf");
-                return new Library.PdfFile { FileName = xmlFile1, PdfDoc = file };
+                return new PdfFile { FileName = xmlFile1, PdfDoc = file };
             }
             else
             {
@@ -157,7 +159,7 @@ namespace AntennaHousePdf.Library
                 string xmlFile1 = xml[xml.Length - 1];
                 xmlFile1 = xmlFile1.Replace(".xml", ".pdf");
                 FileContentResult file = new FileContentResult(doc, "application/pdf");
-                return new Library.PdfFile { FileName = xmlFile1, PdfDoc = file };
+                return new PdfFile { FileName = xmlFile1, PdfDoc = file };
             }
         }
     }

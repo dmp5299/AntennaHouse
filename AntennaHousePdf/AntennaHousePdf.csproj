@@ -179,7 +179,6 @@
     <Content Include="fonts\glyphicons-halflings-regular.woff" />
     <Content Include="fonts\glyphicons-halflings-regular.ttf" />
     <Content Include="fonts\glyphicons-halflings-regular.eot" />
-    <EmbeddedResource Include="Entities\entities.ent" />
     <None Include="Properties\PublishProfiles\AntennaHousePdf20170127122014 - Web Deploy.pubxml" />
     <None Include="Properties\PublishProfiles\AntennaHousePdf20170127124831 - Web Deploy.pubxml" />
     <None Include="Properties\PublishProfiles\dave.pubxml" />
@@ -209,31 +208,13 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="App_Start\RouteConfig.cs" />
-    <Compile Include="Factories\BuildDmBuilder.cs" />
     <Compile Include="Controllers\HomeController.cs" />
-    <Compile Include="Factories\FileUploadFactory.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
-    <Compile Include="Interfaces\IBuildDm.cs" />
-    <Compile Include="Interfaces\IUploadFiles.cs" />
-    <Compile Include="Library\CreateDocument.cs" />
     <Compile Include="Library\GetPdf.cs" />
-    <Compile Include="Library\EquipDesignatorDm.cs" />
-    <Compile Include="Library\MyXmlUrlResolver.cs" />
-    <Compile Include="Library\PdfFile.cs" />
-    <Compile Include="Library\UploadGraphicFiles.cs" />
-    <Compile Include="Library\UploadXmlFiles.cs" />
-    <Compile Include="SaxonExtensions\FileChek.cs" />
-    <Compile Include="Library\Foldouts.cs" />
-    <Compile Include="SaxonExtensions\getGraphicPath.cs" />
-    <Compile Include="Library\MergePm.cs" />
-    <Compile Include="Library\NumIndexDm.cs" />
-    <Compile Include="SaxonExtensions\GetReferences.cs" />
-    <Compile Include="SaxonExtensions\SbFooter.cs" />
     <Compile Include="Models\AntennaPdf.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="SaxonExtensions\TitlePage.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Views\web.config">
@@ -259,6 +240,12 @@
   </ItemGroup>
   <ItemGroup>
     <WCFMetadata Include="Service References\" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\AntennaHouseBusinessLayer\AntennaHouseBusinessLayer.csproj">
+      <Project>{4dfb6457-164f-4b26-91b9-a29710303b1d}</Project>
+      <Name>AntennaHouseBusinessLayer</Name>
+    </ProjectReference>
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
