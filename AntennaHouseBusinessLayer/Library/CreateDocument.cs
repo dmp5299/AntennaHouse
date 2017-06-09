@@ -25,17 +25,24 @@ namespace AntennaHouseBusinessLayer.Library
 {
     public class CreateDocument
     {
-        [FileIOPermissionAttribute(SecurityAction.Demand, Unrestricted = true)]
-        public byte[] SaxonBuild(string xml, string project, string subProject = null, Boolean foldout = false)
+        public Processor createProcessor()
         {
-
-            var myUniqueFileName = string.Format(@"C:/inetpub/wwwroot/tempPdf/{0}.pdf", DateTime.Now.Ticks);
-            byte[] pdf = null; Processor processor = new Processor();
+            Processor processor = new Processor();
             processor.RegisterExtensionFunction(new AntennaHousePdf.SaxonExtensions.FileCheck());
             processor.RegisterExtensionFunction(new AntennaHousePdf.SaxonExtensions.getGraphicPath());
             processor.RegisterExtensionFunction(new AntennaHousePdf.SaxonExtensions.SbFooter());
-            processor.RegisterExtensionFunction(new AntennaHousePdf.SaxonExtensions.TitlePage());
+            processor.RegisterExtensionFunction(new AntennaHousePdf.SaxonExtensions.SubProject());
             processor.RegisterExtensionFunction(new AntennaHousePdf.SaxonExtensions.GetReferences());
+            return processor;
+        }
+        
+
+        [FileIOPermissionAttribute(SecurityAction.Demand, Unrestricted = true)]
+        public byte[] SaxonBuild(string xml, string project, string subProject = null, Boolean foldout = false)
+        {
+            var myUniqueFileName = string.Format(@"C:/inetpub/wwwroot/tempPdf/{0}.pdf", DateTime.Now.Ticks);
+            byte[] pdf = null;
+            Processor processor = createProcessor();
             XsltCompiler compiler = processor.NewXsltCompiler();
             string xmlpath = ConfigurationManager.AppSettings["root"] + ConfigurationManager.AppSettings["tempxml"];
             string xslpath = ConfigurationManager.AppSettings["projectDirectory"] + project + "/" + ((subProject != null) ? subProject + "/" : "") + project + "_" + "master.xsl";
@@ -80,8 +87,10 @@ namespace AntennaHouseBusinessLayer.Library
             {
                 serializer.SetOutputFile(System.Web.HttpContext.Current.Session["UserId"] + "/" + "foldout.fo");
             }
-            else { serializer.SetOutputStream(inFo); }
-            transformer.Run(serializer);
+            else { serializer.SetOutputStream(inFo); }/*
+            serializer.SetOutputFile(System.Web.HttpContext.Current.Session["UserId"] + "/" + "foldout.fo");*/
+            transformer.Run(serializer);/*
+            MessageBox.Show("done");*/
             if (foldout == true)
             {
                 input = processor.NewDocumentBuilder().Build(new Uri(System.Web.HttpContext.Current.Session["UserId"] + "/" + "foldout.fo"));
@@ -95,7 +104,6 @@ namespace AntennaHouseBusinessLayer.Library
                 using (FileStream outFs = File.Open(myUniqueFileName,
             FileMode.Create, FileAccess.ReadWrite))
                 {
-
                     obj.OptionFileURI = "C:\\inetpub\\wwwroot\\config\\config.xml";
 
                     obj.BaseURI = Path.GetDirectoryName(xml) + "/";

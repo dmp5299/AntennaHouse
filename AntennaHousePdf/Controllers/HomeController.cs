@@ -53,23 +53,32 @@ namespace AntennaHousePdf.Controllers
                     else
                     {
                         if (pdfParams.SubProjectSB == "Airbus")
-                    {
-                        System.Web.HttpContext.Current.Session["sbFooter"] = pdfParams.Footer;
-                    }
+                        {
+                            System.Web.HttpContext.Current.Session["sbFooter"] = pdfParams.Footer;
+                        }
                         using (ZipFile zip = new ZipFile())
                         {
                             UploadGraphicFiles uploadg = new UploadGraphicFiles();
                             UploadXmlFiles uploadx = new UploadXmlFiles();
                             if(pdfParams.Graphics[0] != null)
-                                uploadg.uploadFiles(pdfParams.Graphics, "graphicsFolder");
+                                uploadg.uploadFiles(pdfParams.Graphics, "graphicFolder");
                             uploadx.uploadFiles(pdfParams.XmlFiles, "UserId");
                             string[] filesEntries = Directory.GetFiles(Session["UserId"].ToString());
                             foreach (string fileEntry in filesEntries)
                             {
-                                byte[] doc = doc1.SaxonBuild(fileEntry,pdfParams.Project, pdfParams.SubProjectSB);
+                                byte[] doc;
+                                try
+                                {
+                                    doc = doc1.SaxonBuild(fileEntry, pdfParams.Project, pdfParams.Project == "SB" ? pdfParams.SubProjectSB : null);
+                                }
+                                catch (XfoException e)
+                                {
+                                    throw new XfoException(0,0,fileEntry + e.Message);
+                                }
                                 var pdfDoc = doc;
                                 string[] xml = fileEntry.Split('\\');
                                 string xmlFile1 = xml[xml.Length - 1];
+                                xmlFile1 = xmlFile1.Replace(".XML", ".pdf");
                                 zip.AddEntry(xmlFile1.Replace(".xml", ".pdf"), pdfDoc);
                             }
                             var memStream = new MemoryStream();
@@ -173,11 +182,11 @@ namespace AntennaHousePdf.Controllers
                 if(Session["graphicFolder"]!=null)
                 {
                     Directory.Delete(Session["graphicFolder"].ToString(),true);
-                }
+                }/*
                 if (Session["UserId"]!= null)
                 {
                     Directory.Delete(Session["UserId"].ToString(), true);
-                }
+                }*/
                 Session.Clear();
             }
 

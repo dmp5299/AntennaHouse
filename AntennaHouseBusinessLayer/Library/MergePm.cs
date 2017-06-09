@@ -36,6 +36,9 @@ namespace AntennaHouseBusinessLayer.Library
             XmlNodeList refs;
             doc = new XmlDocument();
             doc.Load(PmFile);
+            //set date
+            PmDate pm = new PmDate(doc, PmFile);
+            pm.setDate();
             try
             {
                 refs = doc.SelectNodes("descendant::dmRef");
@@ -57,6 +60,7 @@ namespace AntennaHouseBusinessLayer.Library
             string file = null;
             foreach (XmlNode dmRef in dmRefs)
             {
+               
                 file = buildDMString(dmRef);
                 int pos = Array.IndexOf(xmlFiles, xmlFolder + "/" + file);
                 if(pos > -1)
@@ -64,9 +68,16 @@ namespace AntennaHouseBusinessLayer.Library
                     XmlDocument dmodule = new XmlDocument();
                     dmodule.XmlResolver = new MyXmlUrlResolver();
                     dmodule.Load(xmlFolder + "/" + file);
+                    if(dmodule.SelectSingleNode("descendant::refs") != null)
+                    {
+                        XmlNode refs = dmodule.SelectSingleNode("descendant::refs");
+                        dmodule.SelectSingleNode("descendant::content").RemoveChild(refs);
+                    }
+                    References references = new References(dmodule, xmlFolder + "/" + file);
+                    references.addReferences();
                     XmlNode root = dmodule.DocumentElement;
                     root.Attributes.RemoveAll();
-                    XmlNode dmCode = dmodule.SelectSingleNode("descendant::dmCode");
+                    XmlNode dmCode = dmodule.SelectSingleNode("descendant::dmCode[1]");
                     addAttsToDmodule(root, dmCode, dmodule, xmlFolder + "/" + file);
                     XmlNode importNode = doc.ImportNode(root, true);
                     XmlNode parent = dmRef.ParentNode;

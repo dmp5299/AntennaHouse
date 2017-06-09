@@ -107,6 +107,8 @@
     <Compile Include="Library\MyXmlUrlResolver.cs" />
     <Compile Include="Library\NumIndexDm.cs" />
     <Compile Include="Library\PdfFile.cs" />
+    <Compile Include="Library\PmDate.cs" />
+    <Compile Include="Library\References.cs" />
     <Compile Include="Library\UploadGraphicFiles.cs" />
     <Compile Include="Library\UploadXmlFiles.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -114,7 +116,7 @@
     <Compile Include="SaxonExtensions\getGraphicPath.cs" />
     <Compile Include="SaxonExtensions\GetReferences.cs" />
     <Compile Include="SaxonExtensions\SbFooter.cs" />
-    <Compile Include="SaxonExtensions\TitlePage.cs" />
+    <Compile Include="SaxonExtensions\SubProject.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />

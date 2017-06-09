@@ -106,7 +106,7 @@ namespace AntennaHousePdf.Library
                 string xmlFile = arr[arr.Length - 1];
                 string subFoler = null;
                 if (antennaPdf.Project == "Rolls Royce") { subFoler = antennaPdf.Volume; }
-                else if (antennaPdf.Project == "CMM") { subFoler = antennaPdf.SubProject; }
+                else if (antennaPdf.Project == "CMM") { subFoler = antennaPdf.SubProject;System.Web.HttpContext.Current.Session["subProject"] = subFoler; }
                 else if (antennaPdf.Project == "SB")
                 {
                     subFoler = antennaPdf.SubProjectSB;
@@ -132,6 +132,7 @@ namespace AntennaHousePdf.Library
                 {
                     if (antennaPdf.Project == "CMM")
                     {
+                        System.Web.HttpContext.Current.Session["subProject"] = antennaPdf.SubProject;
                         Factory factory = new Factory();
                         if (checkForDm(pmFile, "013"))
                         {

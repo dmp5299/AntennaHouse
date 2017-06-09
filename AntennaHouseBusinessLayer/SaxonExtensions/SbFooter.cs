@@ -53,16 +53,8 @@ namespace AntennaHousePdf.SaxonExtensions
     {
         public override IXdmEnumerator Call(IXdmEnumerator[] arguments, DynamicContext context)
         {
-            MessageBox.Show("here");
             string footer="";
-            try
-            {
-                footer = System.Web.HttpContext.Current.Session["sbFooter"].ToString();
-            }
-            catch(Exception e)
-            {
-                MessageBox.Show(e.Message);
-            }
+            footer = System.Web.HttpContext.Current.Session["sbFooter"].ToString();
             XdmAtomicValue result = new XdmAtomicValue(footer);
             return (IXdmEnumerator)result.GetEnumerator();
         }
