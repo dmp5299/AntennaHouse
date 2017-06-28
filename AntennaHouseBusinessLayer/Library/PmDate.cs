@@ -24,8 +24,8 @@ namespace AntennaHouseBusinessLayer.Library
         {
             XmlNode issueDate = pmFile.SelectSingleNode("descendant::issueDate[1]");
             DateTime thisDay = DateTime.Today;
-            issueDate.Attributes["day"].InnerText = thisDay.Day.ToString();
-            issueDate.Attributes["month"].InnerText = thisDay.Month.ToString();
+            issueDate.Attributes["day"].InnerText = thisDay.Day.ToString("00");
+            issueDate.Attributes["month"].InnerText = thisDay.Month.ToString("00");
             issueDate.Attributes["year"].InnerText = thisDay.Year.ToString();
             pmFile.Save(file);
         }

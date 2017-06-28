@@ -98,25 +98,39 @@
   <ItemGroup>
     <Compile Include="Factories\BuildDmBuilder.cs" />
     <Compile Include="Factories\FileUploadFactory.cs" />
+    <Compile Include="Factories\XmlPopulatorFactory.cs" />
     <Compile Include="Interfaces\IBuildDm.cs" />
     <Compile Include="Interfaces\IUploadFiles.cs" />
+    <Compile Include="Interfaces\IXmlPopulator.cs" />
+    <Compile Include="Interfaces\IToolsAndWarnings.cs" />
+    <Compile Include="Library\ChangeFileName.cs" />
     <Compile Include="Library\CreateDocument.cs" />
     <Compile Include="Library\EquipDesignatorDm.cs" />
     <Compile Include="Library\Foldouts.cs" />
+    <Compile Include="Library\Mail.cs" />
     <Compile Include="Library\MergePm.cs" />
     <Compile Include="Library\MyXmlUrlResolver.cs" />
     <Compile Include="Library\NumIndexDm.cs" />
     <Compile Include="Library\PdfFile.cs" />
     <Compile Include="Library\PmDate.cs" />
+    <Compile Include="Library\RefDm.cs" />
     <Compile Include="Library\References.cs" />
+    <Compile Include="Library\ReplacementOperations.cs" />
+    <Compile Include="Library\SuppliesPopulator.cs" />
+    <Compile Include="Library\SupportEquipmentPopulator.cs" />
     <Compile Include="Library\UploadGraphicFiles.cs" />
     <Compile Include="Library\UploadXmlFiles.cs" />
+    <Compile Include="Library\WarningPopulator.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="SaxonExtensions\FileChek.cs" />
     <Compile Include="SaxonExtensions\getGraphicPath.cs" />
     <Compile Include="SaxonExtensions\GetReferences.cs" />
     <Compile Include="SaxonExtensions\SbFooter.cs" />
     <Compile Include="SaxonExtensions\SubProject.cs" />
+    <Compile Include="Tools\Supplies.cs" />
+    <Compile Include="Tools\SupportEquipmentAndSupplies.cs" />
+    <Compile Include="Tools\Warning.cs" />
+    <Compile Include="CustomExceptions\ZippedPdfException.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />

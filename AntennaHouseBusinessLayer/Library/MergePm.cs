@@ -25,7 +25,13 @@ namespace AntennaHouseBusinessLayer.Library
             string[] xmlFiles = Directory.GetFiles(xmlFolder, "DM*");
             for(int i = 0; i < xmlFiles.Length; i++)
             {
+                if (xmlFiles[i].Contains('_'))
+                {
+                    ChangeFileName c = new ChangeFileName(xmlFiles[i], xmlFiles[i].IndexOf('_'), 4, "");
+                    xmlFiles[i] = c.changeNames();
+                }
                 xmlFiles[i] = xmlFiles[i].Replace(@"\","/");
+                xmlFiles[i] = xmlFiles[i].Replace(@".XML", ".xml");                
             }
             XmlNodeList dmRefs = getDmRefs();
             insertModules(dmRefs, xmlFiles, xmlFolder);

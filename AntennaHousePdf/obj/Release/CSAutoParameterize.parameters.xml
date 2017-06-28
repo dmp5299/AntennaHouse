@@ -1,2 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<parameters />
+<parameters>
+  <parameter name="AntennaHouseEntities-Web.config Connection String" description="AntennaHouseEntities Connection String used in web.config by the application to access the database." defaultValue="metadata=res://*/AntennaModel.csdl|res://*/AntennaModel.ssdl|res://*/AntennaModel.msl;provider=System.Data.SqlClient;provider connection string=&quot;data source=rcmwespubs03\sqlexpress;initial catalog=AntennaHouse;integrated security=True;MultipleActiveResultSets=True;App=EntityFramework&quot;" tags="SqlConnectionString">
+    <parameterEntry kind="XmlFile" scope="C:\\Users\\dpothier\\Documents\\AntennaHousePdf-Dev\\AntennaHousePdf\\obj\\Release\\Package\\PackageTmp\\Web\.config$" match="/configuration/connectionStrings/add[@name='AntennaHouseEntities']/@connectionString" />
+  </parameter>
+</parameters>

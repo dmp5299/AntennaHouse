@@ -21,16 +21,98 @@ using System.Drawing;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System.Xml.Linq;
 using AntennaHouseBusinessLayer.Factories;
+using System.Text;
+using System.IO;
 
 namespace AntennaHousePdf.Controllers
 {
     public class HomeController : Controller
-    {        
-        // GET: Home
+    {
+        [System.Web.Mvc.HttpGet]
+        public ActionResult Login()
+        {
+            return View();
+        }
+
+        [System.Web.Mvc.HttpPost]
+        public ActionResult Login(UserProfile user)
+        {
+            if (ModelState.IsValid)
+            {
+                using (AntennaHouseEntities db = new AntennaHouseEntities())
+                {
+                    var obj = db.UserProfiles.Where(a => a.UserName.Equals(user.UserName) && a.Password.Equals(user.Password)).FirstOrDefault();
+                    if (obj != null)
+                    {
+                        Session["id"] = obj.UserId.ToString();
+                        Session["UserName"] = obj.UserName.ToString();
+                        Session["FirstName"] = obj.FirstName.ToString();
+                        Session["LastName"] = obj.LastName.ToString();
+                        return RedirectToAction("Index");
+                    }
+                    else
+                    {
+                        ModelState.AddModelError("", "Incorrect username/password combination");
+                        return View(user);
+                    }
+                }
+
+            }
+            return View(user);
+        }
+
+        [System.Web.Mvc.HttpGet]
         public ActionResult Index()
         {
-            ViewBag.Success = true;
-            return View();
+            if (Session["id"] != null) 
+            {
+                return View();
+            }
+            else
+            {
+                return RedirectToAction("Login");
+            }
+        }
+
+        public ActionResult Logout()
+        {
+            Session.Abandon();
+            return RedirectToAction("Index");
+        }
+
+        public byte[] processZipDocuments(string fileEntry, AntennaPdf pdfParams, CreateDocument doc1, GetPdf builder)
+        {
+            try
+            {
+                if (pdfParams.Project == "53K")
+                {
+
+                    Replace replacement = new Replace(Session["UserId"].ToString() + "/" + Path.GetFileName(fileEntry), "<!NOTATION cgm SYSTEM>", "");
+                    replacement.replaceContentText();
+                    replacement = new Replace(Session["UserId"].ToString() + "/" + Path.GetFileName(fileEntry), "encoding=\"UTF-16\"", "");
+                    replacement.replaceContentText();
+
+                    builder.fill53K(Path.GetFileName(fileEntry));
+
+                }
+                return doc1.SaxonBuild(fileEntry, pdfParams.Project, pdfParams.Project == "SB" ? pdfParams.SubProjectSB : null);
+            }
+            catch (XfoException e)
+            {
+                throw new XfoException(0, 0, fileEntry + " " + e.Message);
+            }
+            catch (NullReferenceException e)
+            {
+                throw new NullReferenceException(fileEntry + " " + e.Message);
+            }
+            catch (XmlException e)
+            {
+                throw new XmlException(fileEntry + " " + e.Message);
+            }
+            catch (Exception e)
+            {
+                throw new XmlException(fileEntry + " " + e.Message);
+            }
         }
 
         [System.Web.Mvc.HttpPost]
@@ -45,8 +127,15 @@ namespace AntennaHousePdf.Controllers
                     
                     if (pdfParams.Project == "CMM" || pdfParams.Project == "Rolls Royce" || pdfParams.XmlFiles.Count == 1)
                     {
-                        PdfFile file = builder.createDocument();
-                        Response.AddHeader("Content-Disposition", new System.Net.Mime.ContentDisposition("attachment") { FileName = file.FileName }.ToString());
+                        
+                        PdfFile file = builder.createDocument();/*
+                        StringBuilder sb = new StringBuilder();
+                        sb.Append(Session["UserName"] + " built pdf at " + DateTime.Now);
+                       flush every 20 seconds as you do it
+                        
+                        System.IO.File.AppendAllText("C:/Users/dpothier/AppData/AntennaHouseLogData/" + "log.txt", sb.ToString());
+                                                sb.Clear();*/
+                        Response.AddHeader("Content-Disposition", new System.Net.Mime.ContentDisposition("attachment") { FileName = file.FileName.Replace(".XML",".pdf") }.ToString());
                         Response.ContentType = "application/pdf";
                         return file.PdfDoc;
                     }
@@ -60,21 +149,13 @@ namespace AntennaHousePdf.Controllers
                         {
                             UploadGraphicFiles uploadg = new UploadGraphicFiles();
                             UploadXmlFiles uploadx = new UploadXmlFiles();
-                            if(pdfParams.Graphics[0] != null)
-                                uploadg.uploadFiles(pdfParams.Graphics, "graphicFolder");
+                            if(pdfParams.Graphics[0] != null) { uploadg.uploadFiles(pdfParams.Graphics, "graphicFolder"); }
+                               
                             uploadx.uploadFiles(pdfParams.XmlFiles, "UserId");
                             string[] filesEntries = Directory.GetFiles(Session["UserId"].ToString());
                             foreach (string fileEntry in filesEntries)
                             {
-                                byte[] doc;
-                                try
-                                {
-                                    doc = doc1.SaxonBuild(fileEntry, pdfParams.Project, pdfParams.Project == "SB" ? pdfParams.SubProjectSB : null);
-                                }
-                                catch (XfoException e)
-                                {
-                                    throw new XfoException(0,0,fileEntry + e.Message);
-                                }
+                                byte[] doc = processZipDocuments(fileEntry,pdfParams,doc1, builder);
                                 var pdfDoc = doc;
                                 string[] xml = fileEntry.Split('\\');
                                 string xmlFile1 = xml[xml.Length - 1];
@@ -92,15 +173,31 @@ namespace AntennaHousePdf.Controllers
                 }
                 catch (ArgumentNullException e)
                 {
+                    Mail mail = new Mail();
+                    string error = "Error buliding pdf from " + Session["FirstName"].ToString() + " " + Session["LastName"].ToString() + "<br/><br/>" + "Illigal argument: " + e.Message;
                     var resp = new HttpResponseMessage(HttpStatusCode.NotFound)
                     {
                         Content = new StringContent(e.Message),
                         ReasonPhrase = ("Illigal argument")
                     };
                     throw new HttpResponseException(resp);
-                }
+                }/*
+                catch (NullReferenceException e)
+                {
+                    Mail mail = new Mail();
+                    string error = "Error buliding pdf from " + Session["FirstName"].ToString() + " " + Session["LastName"].ToString() + "<br/><br/>" + "Null Reference: " + e.Message;
+                    var resp = new HttpResponseMessage(HttpStatusCode.NotFound)
+                    {
+                        Content = new StringContent(e.Message),
+                        ReasonPhrase = ("Null Reference Exception")
+                    };
+                    throw new HttpResponseException(resp);
+                }*/
                 catch (XfoException e)
                 {
+                    Mail mail = new Mail();
+                    string error = "Error buliding pdf from " + Session["FirstName"].ToString() + " " + Session["LastName"].ToString() + "<br/><br/>" + "XSL-FO Error: " + e.Message;
+                    mail.sendMail(error);
                     var resp = new HttpResponseMessage(HttpStatusCode.NotFound)
                     {
                         Content = new StringContent(e.Message),
@@ -110,6 +207,8 @@ namespace AntennaHousePdf.Controllers
                 }
                 catch (XsltException e)
                 {
+                    Mail mail = new Mail();
+                    string error = "Error buliding pdf from " + Session["FirstName"].ToString() + " " + Session["LastName"].ToString() + "<br/><br/>" + "XSL Transform Error: " + e.Message;
                     var resp = new HttpResponseMessage(HttpStatusCode.NotFound)
                     {
                         Content = new StringContent(e.Message),
@@ -119,6 +218,8 @@ namespace AntennaHousePdf.Controllers
                 }
                 catch (IOException e)
                 {
+                    Mail mail = new Mail();
+                    string error = "Error buliding pdf from " + Session["FirstName"].ToString() + " " + Session["LastName"].ToString() + "<br/><br/>" + "IO Exception: " + e.Message;
                     var resp = new HttpResponseMessage(HttpStatusCode.NotFound)
                     {
                         Content = new StringContent(e.Message),
@@ -128,6 +229,8 @@ namespace AntennaHousePdf.Controllers
                 }
                 catch (InvalidOperationException e)
                 {
+                    Mail mail = new Mail();
+                    string error = "Error buliding pdf from " + Session["FirstName"].ToString() + " " + Session["LastName"].ToString() + "<br/><br/>" + "Invalid Operation: " + e.Message;
                     var resp = new HttpResponseMessage(HttpStatusCode.NotFound)
                     {
                         Content = new StringContent(e.Message),
@@ -137,6 +240,8 @@ namespace AntennaHousePdf.Controllers
                 }
                 catch (ArgumentException e)
                 {
+                    Mail mail = new Mail();
+                    string error = "Error buliding pdf from " + Session["FirstName"].ToString() + " " + Session["LastName"].ToString() + "<br/><br/>" + "Illigal Arguement Exception: " + e.Message;
                     var resp = new HttpResponseMessage(HttpStatusCode.NotFound)
                     {
                         Content = new StringContent(e.Message),
@@ -144,33 +249,29 @@ namespace AntennaHousePdf.Controllers
                     };
                     throw new HttpResponseException(resp);
                 }
-                catch (NullReferenceException e)
-                {
-                    var resp = new HttpResponseMessage(HttpStatusCode.NotFound)
-                    {
-                        Content = new StringContent(e.Message + e.StackTrace),
-                        ReasonPhrase = "Null Reference Exception"
-                    };
-                    throw new HttpResponseException(resp);
-                }
                 catch (XmlException e)
                 {
+                    Mail mail = new Mail();
+                    string error = "Error buliding pdf from " + Session["FirstName"].ToString() + " " + Session["LastName"].ToString() + "<br/><br/>" + "Xml Exception: " + e.Message;
                     var resp = new HttpResponseMessage(HttpStatusCode.NotFound)
                     {
                         Content = new StringContent(e.Message),
                         ReasonPhrase = "Xml Exception"
                     };
                     throw new HttpResponseException(resp);
-                }
+                }/*
                 catch (Exception e)
                 {
+                    Mail mail = new Mail();
+                    string error = "Error buliding pdf from " + Session["FirstName"].ToString() + " " + Session["LastName"].ToString() + "<br/><br/>" + "Exception: " + e.Message;
+                    mail.sendMail(error);
                     var resp = new HttpResponseMessage(HttpStatusCode.NotFound)
                     {
                         Content = new StringContent(e.Message),
                         ReasonPhrase = "Exception"
                     };
                     throw new HttpResponseException(resp);
-                }
+                }*/
             }
             catch (HttpResponseException e)
             {
@@ -182,12 +283,11 @@ namespace AntennaHousePdf.Controllers
                 if(Session["graphicFolder"]!=null)
                 {
                     Directory.Delete(Session["graphicFolder"].ToString(),true);
-                }/*
-                if (Session["UserId"]!= null)
+                }
+                if (Session["UserId"] != null)
                 {
                     Directory.Delete(Session["UserId"].ToString(), true);
-                }*/
-                Session.Clear();
+                }
             }
 
         }

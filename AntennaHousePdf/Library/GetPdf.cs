@@ -38,6 +38,10 @@ namespace AntennaHousePdf.Library
             {
                 uploadGraphicFiles.uploadFiles(antennaPdf.Graphics, "graphicFolder");
             }
+            else
+            {
+                HttpContext.Current.Session.Remove("graphicFolder");
+            }
         }
 
         public Boolean checkForElement(string xml, string element)
@@ -56,6 +60,36 @@ namespace AntennaHousePdf.Library
                     }
                     return false;
                 }
+            }
+            
+        }
+
+        public void fill53K(string xmlFile)
+        {
+            XmlPopulatorFactory factory = new XmlPopulatorFactory();
+            if (checkForElement(HttpContext.Current.Session["UserId"].ToString() + "/" + xmlFile, "supequi"))
+            {
+                SupportEquipmentPopulator s = (SupportEquipmentPopulator)factory.GetPopulatorClass(XmlPopulatorFactory.ElementType.SupportEquipment,
+                HttpContext.Current.Session["UserId"].ToString() + "/" + xmlFile);
+                s.loopElements();
+            }
+            if (checkForElement(HttpContext.Current.Session["UserId"].ToString() + "/" + xmlFile, "supply"))
+            {
+                SuppliesPopulator supply = (SuppliesPopulator)factory.GetPopulatorClass(XmlPopulatorFactory.ElementType.Supplies,
+                HttpContext.Current.Session["UserId"].ToString() + "/" + xmlFile);
+                supply.loopElements();
+            }
+            if (checkForElement(HttpContext.Current.Session["UserId"].ToString() + "/" + xmlFile, "warning"))
+            {
+                WarningPopulator warning = (WarningPopulator)factory.GetPopulatorClass(XmlPopulatorFactory.ElementType.Warnings,
+                HttpContext.Current.Session["UserId"].ToString() + "/" + xmlFile);
+                warning.loopElements();
+            }
+            if (checkForElement(HttpContext.Current.Session["UserId"].ToString() + "/" + xmlFile, "caution"))
+            {
+                WarningPopulator warning = (WarningPopulator)factory.GetPopulatorClass(XmlPopulatorFactory.ElementType.Cautions,
+                HttpContext.Current.Session["UserId"].ToString() + "/" + xmlFile);
+                warning.loopElements();
             }
         }
 
@@ -115,6 +149,15 @@ namespace AntennaHousePdf.Library
                         System.Web.HttpContext.Current.Session["sbFooter"] = antennaPdf.Footer;
                     }
                 }
+                if(antennaPdf.Project == "53K")
+                {
+                    Replace replacement = new Replace(HttpContext.Current.Session["UserId"].ToString() + "/" + xmlFile, "<!NOTATION cgm SYSTEM>", "");
+                    replacement.replaceContentText();
+                    replacement = new Replace(HttpContext.Current.Session["UserId"].ToString() + "/" + xmlFile, "encoding=\"UTF-16\"", "");
+                    replacement.replaceContentText();
+                    fill53K(xmlFile);
+                    
+                }
                 byte[] doc = doc1.SaxonBuild(System.Web.HttpContext.Current.Session["UserId"].ToString() + "/" + xmlFile, antennaPdf.Project, subFoler,
                 checkForElement(HttpContext.Current.Session["UserId"].ToString() + "/" + xmlFile, "foldout"));
                 var pdfDoc = doc;
@@ -137,12 +180,13 @@ namespace AntennaHousePdf.Library
                         if (checkForDm(pmFile, "013"))
                         {
 
-                            NumIndexDm num = (NumIndexDm)factory.GetDmClass(Factory.DmType.NumIndex);
+                            NumIndexDm num = (NumIndexDm)factory.GetDmClass(Factory.DmType.NumIndex, HttpContext.Current.Session["UserId"].ToString());
+
                             num.buildDmFile(HttpContext.Current.Session["UserId"].ToString());
                         }
                         if (checkForDm(pmFile, "014"))
                         {
-                            EquipDesignatorDm des = (EquipDesignatorDm)factory.GetDmClass(Factory.DmType.EquipmentDesignator);
+                            EquipDesignatorDm des = (EquipDesignatorDm)factory.GetDmClass(Factory.DmType.EquipmentDesignator, HttpContext.Current.Session["UserId"].ToString());
                             des.buildDmFile(HttpContext.Current.Session["UserId"].ToString());
                         }
                     }

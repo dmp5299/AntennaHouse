@@ -67,3 +67,7 @@ C:\Users\dpothier\Documents\AntennaHousePdf-Dev\AntennaHousePdf\bin\Castle.Core.
 C:\Users\dpothier\Documents\AntennaHousePdf-Dev\AntennaHousePdf\bin\Moq.dll
 C:\Users\dpothier\Documents\AntennaHousePdf-Dev\AntennaHousePdf\bin\Castle.Core.xml
 C:\Users\dpothier\Documents\AntennaHousePdf-Dev\AntennaHousePdf\bin\Moq.xml
+C:\Users\dpothier\Documents\AntennaHousePdf-Dev\AntennaHousePdf\bin\EntityFramework.dll
+C:\Users\dpothier\Documents\AntennaHousePdf-Dev\AntennaHousePdf\bin\EntityFramework.SqlServer.dll
+C:\Users\dpothier\Documents\AntennaHousePdf-Dev\AntennaHousePdf\bin\EntityFramework.xml
+C:\Users\dpothier\Documents\AntennaHousePdf-Dev\AntennaHousePdf\bin\EntityFramework.SqlServer.xml
