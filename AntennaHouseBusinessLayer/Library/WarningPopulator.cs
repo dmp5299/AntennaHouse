@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using AntennaHouseBusinessLayer.Interfaces;
 using AntennaHouseBusinessLayer.Tools;
+using AntennaHouseBusinessLayer.XmlObjects;
 using System.Xml;
 using System.Configuration;
 using System.Windows.Forms;
@@ -56,7 +57,7 @@ namespace AntennaHouseBusinessLayer.Library
         private string buildDmoduleIdentifier(XmlNode warning)
         {
             XmlNode avee = warning.SelectSingleNode("descendant::avee");
-            RefDm refDm = new RefDm
+            RefDm53K refDm = new RefDm53K
             {
                 Modelic = avee.SelectSingleNode("modelic").InnerText,
                 sdc = avee.SelectSingleNode("sdc").InnerText,

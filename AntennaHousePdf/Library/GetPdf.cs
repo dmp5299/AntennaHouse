@@ -13,6 +13,7 @@ using System.Web.Mvc;
 using System.Windows.Forms;
 using AntennaHousePdf.Factories;
 using Ionic.Zip;
+using AntennaHouseBusinessLayer.XmlUtils;
 
 namespace AntennaHousePdf.Library
 {
@@ -190,10 +191,7 @@ namespace AntennaHousePdf.Library
                             des.buildDmFile(HttpContext.Current.Session["UserId"].ToString());
                         }
                     }
-                    MergePm merge;
-                    merge = new MergePm();
-                    merge.PmFile = pmFile;
-                    merge.mergeFiles(HttpContext.Current.Session["UserId"].ToString());
+                    MergePm.mergeFiles(HttpContext.Current.Session["UserId"].ToString(),pmFile);
                 }
                 else
                 {

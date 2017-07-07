@@ -127,14 +127,7 @@ namespace AntennaHousePdf.Controllers
                     
                     if (pdfParams.Project == "CMM" || pdfParams.Project == "Rolls Royce" || pdfParams.XmlFiles.Count == 1)
                     {
-                        
-                        PdfFile file = builder.createDocument();/*
-                        StringBuilder sb = new StringBuilder();
-                        sb.Append(Session["UserName"] + " built pdf at " + DateTime.Now);
-                       flush every 20 seconds as you do it
-                        
-                        System.IO.File.AppendAllText("C:/Users/dpothier/AppData/AntennaHouseLogData/" + "log.txt", sb.ToString());
-                                                sb.Clear();*/
+                        PdfFile file = builder.createDocument();
                         Response.AddHeader("Content-Disposition", new System.Net.Mime.ContentDisposition("attachment") { FileName = file.FileName.Replace(".XML",".pdf") }.ToString());
                         Response.ContentType = "application/pdf";
                         return file.PdfDoc;
