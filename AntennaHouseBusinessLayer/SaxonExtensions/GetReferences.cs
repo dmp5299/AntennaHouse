@@ -59,7 +59,6 @@ namespace AntennaHousePdf.SaxonExtensions
             {
                 XdmAtomicValue arg = (XdmAtomicValue)arguments[0].Current;
                 string val = (string)arg.Value;
-                MessageBox.Show(val);
                 if (System.Web.HttpContext.Current.Session["graphicFolder"] != null)
                 {
                     Boolean graphicExists = System.IO.File.Exists(System.Web.HttpContext.Current.Session["graphicFolder"].ToString() + "/" + val);

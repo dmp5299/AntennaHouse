@@ -18,6 +18,8 @@ namespace AntennaHouseBusinessLayer.Factories
                     return new EquipDesignatorDm(xmlFolder);
                 case DmType.NumIndex:
                     return new NumIndexDm(xmlFolder);
+                case DmType.NumIndex4Point1:
+                    return new NumIndexDm4Point1(xmlFolder);
                 default:
                     throw new NotSupportedException();
             }
@@ -26,7 +28,8 @@ namespace AntennaHouseBusinessLayer.Factories
         public enum DmType
         {
             EquipmentDesignator,
-            NumIndex
+            NumIndex,
+            NumIndex4Point1
         }
     }
 }

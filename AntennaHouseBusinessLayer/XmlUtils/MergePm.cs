@@ -41,7 +41,7 @@ namespace AntennaHouseBusinessLayer.XmlUtils
             pm.setDate();
             try
             {
-                refs = doc.SelectNodes("descendant::dmRef");
+                refs = doc.SelectNodes("descendant::dmRef[not(ancestor::pmStatus)]");
                 if (refs.Count == 0)
                 {
                     throw new XmlException("There are no dmRefs in this document. Select a proper PM file and try again.");

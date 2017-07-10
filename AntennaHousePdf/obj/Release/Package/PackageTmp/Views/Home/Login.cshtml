@@ -13,6 +13,7 @@
     <!--
     <link rel="stylesheet" type="text/css" href="~/Content/StyleSheet1.css" />-->
     <link href="~/Content/bootstrap.min.css" rel="stylesheet" />
+    <link href="~/Content/MyStyles.css" rel="stylesheet" />
     <!--
     <link href="~/bootstrap/css/bootstrap-theme.min.css" rel="stylesheet" />
     <script src="~/bootstrap/js/bootstrap.min.js"></script>-->
@@ -26,29 +27,12 @@
 
     <title>AntennaHouse</title>
     <style>
-        .btn-primary:hover,
-        .btn-primary:active,
-        .btn-primary.active,
-        .btn-primary:focus {
-            color: #ffffff;
-            background-color: #00BCD4;
-            border-color: #285e8e;
-        }
 
-        .btn-primary {
-            background-color: #0168B3;
-            border-color: #00BCD4;
-        }
-
-        .well {
-            background-color: white;
-            border-color: #00BCD4;
-        }
     </style>
 </head>
 <body>
     <div class="panel panel-success">
-        <div class="panel-heading text-center"><h4>Login</h4></div>
+        <div class="panel-heading text-center" style="color:white;background-color:blue"><h4>Login</h4></div>
         <div class="panel-body">
             <div style="text-align:center;padding-bottom:10px">
                 <image src="~/images/RCMTLogo.jpg" height="160px" width="600px" />
@@ -67,7 +51,7 @@
                         @Html.TextBoxFor(model => model.Password, new { @class = "form-control", Type = "password" })
                     </div>
                     <div style="padding-bottom:.2in">
-                        <input class="btn btn-primary" type="submit" style="font-weight:bold" value="Submit" />
+                        <input class="btn btn-primary" type="submit" value="Submit" />
                     </div>
                 }
             </div>

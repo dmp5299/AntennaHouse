@@ -1,0 +1,5 @@
+C:\Users\dpothier\Documents\AntennaHousePdf-Dev\XmlOperationsBusinessLayer\bin\Release\XmlOperationsBusinessLayer.dll
+C:\Users\dpothier\Documents\AntennaHousePdf-Dev\XmlOperationsBusinessLayer\bin\Release\XmlOperationsBusinessLayer.pdb
+C:\Users\dpothier\Documents\AntennaHousePdf-Dev\XmlOperationsBusinessLayer\obj\Release\XmlOperationsBusinessLayer.csprojResolveAssemblyReference.cache
+C:\Users\dpothier\Documents\AntennaHousePdf-Dev\XmlOperationsBusinessLayer\obj\Release\XmlOperationsBusinessLayer.dll
+C:\Users\dpothier\Documents\AntennaHousePdf-Dev\XmlOperationsBusinessLayer\obj\Release\XmlOperationsBusinessLayer.pdb

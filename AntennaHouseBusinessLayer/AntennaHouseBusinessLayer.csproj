@@ -109,6 +109,7 @@
     <Compile Include="Library\EquipDesignatorDm.cs" />
     <Compile Include="Library\Foldouts.cs" />
     <Compile Include="Library\Mail.cs" />
+    <Compile Include="Library\NumIndexDm4Point1.cs" />
     <Compile Include="XmlObjects\RefDm.cs" />
     <Compile Include="XmlObjects\RefDm53K.cs" />
     <Compile Include="XmlUtils\MergePm.cs" />
@@ -117,7 +118,7 @@
     <Compile Include="Library\PdfFile.cs" />
     <Compile Include="XmlUtils\PmDate.cs" />
     <Compile Include="XmlUtils\References.cs" />
-    <Compile Include="Library\ReplacementOperations.cs" />
+    <Compile Include="FileUtils\ReplacementOperations.cs" />
     <Compile Include="Library\SuppliesPopulator.cs" />
     <Compile Include="Library\SupportEquipmentPopulator.cs" />
     <Compile Include="Library\UploadGraphicFiles.cs" />

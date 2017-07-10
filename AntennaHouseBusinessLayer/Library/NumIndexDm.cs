@@ -65,7 +65,7 @@ namespace AntennaHouseBusinessLayer.Library
 
             XmlAttribute infoCode = doc.CreateAttribute("infoCode");
             infoCode.InnerText = "013";
-            dmCode.Attributes.Append(infoCode);
+             dmCode.Attributes.Append(infoCode);
 
             XmlAttribute infoCodeVariant = doc.CreateAttribute("infoCodeVariant");
             infoCodeVariant.InnerText = "A";
@@ -404,7 +404,7 @@ namespace AntennaHouseBusinessLayer.Library
 
         public void getDmFiles()
         {
-            string[] files = Directory.GetFiles(Location);
+            var files = Directory.GetFiles(Location).Where(name => name.EndsWith(".xml"));
             foreach (string file in files)
             {
                 if (!file.Contains("PM") && !file.Contains("pm"))
@@ -417,7 +417,7 @@ namespace AntennaHouseBusinessLayer.Library
         public List<XmlNode> getNodes()
         {
             XmlDocument doc = new XmlDocument();
-            doc.Load(string.Concat(DmFiles[0]));
+            doc.Load(DmFiles[0].Replace(@"\","/"));
             XmlNode dmCode = doc.SelectSingleNode("descendant::dmCode[1]");
             XmlNode issueDate = doc.SelectSingleNode("descendant::issueDate[1]");
             List<XmlNode> list = new List<XmlNode>();
@@ -440,6 +440,7 @@ namespace AntennaHouseBusinessLayer.Library
                         string third = catalogSeqNumberValue.Substring(4, 2);
                         string fourth = catalogSeqNumberValue.Substring(6, 3);
                         string fifth = catalogSeqNumberValue.Substring(9);
+                        
                         NumericalIndex n = new NumericalIndex
                         {
                             PartNumber = partNumber.InnerText,

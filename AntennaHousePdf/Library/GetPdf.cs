@@ -180,8 +180,13 @@ namespace AntennaHousePdf.Library
                         Factory factory = new Factory();
                         if (checkForDm(pmFile, "013"))
                         {
-
                             NumIndexDm num = (NumIndexDm)factory.GetDmClass(Factory.DmType.NumIndex, HttpContext.Current.Session["UserId"].ToString());
+
+                            num.buildDmFile(HttpContext.Current.Session["UserId"].ToString());
+                        }
+                        else if(checkForDm(pmFile, "942"))
+                        {
+                            NumIndexDm4Point1 num = (NumIndexDm4Point1)factory.GetDmClass(Factory.DmType.NumIndex4Point1, HttpContext.Current.Session["UserId"].ToString());
 
                             num.buildDmFile(HttpContext.Current.Session["UserId"].ToString());
                         }
