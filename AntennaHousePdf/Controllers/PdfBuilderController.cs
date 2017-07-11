@@ -134,7 +134,7 @@ namespace AntennaHousePdf.Controllers
                         ReasonPhrase = ("Illigal argument")
                     };
                     throw new HttpResponseException(resp);
-                }/*
+                }
                 catch (NullReferenceException e)
                 {
                     Mail mail = new Mail();
@@ -145,7 +145,7 @@ namespace AntennaHousePdf.Controllers
                         ReasonPhrase = ("Null Reference Exception")
                     };
                     throw new HttpResponseException(resp);
-                }*/
+                }
                 catch (XfoException e)
                 {
                     Mail mail = new Mail();
@@ -168,7 +168,7 @@ namespace AntennaHousePdf.Controllers
                         ReasonPhrase = "XSL Transform Error"
                     };
                     throw new HttpResponseException(resp);
-                }/*
+                }
                 catch (IOException e)
                 {
                     Mail mail = new Mail();
@@ -179,7 +179,7 @@ namespace AntennaHousePdf.Controllers
                         ReasonPhrase = "IO Exception"
                     };
                     throw new HttpResponseException(resp);
-                }*/
+                }
                 catch (InvalidOperationException e)
                 {
                     Mail mail = new Mail();
@@ -212,7 +212,7 @@ namespace AntennaHousePdf.Controllers
                         ReasonPhrase = "Xml Exception"
                     };
                     throw new HttpResponseException(resp);
-                }/*
+                }
                 catch (Exception e)
                 {
                     Mail mail = new Mail();
@@ -224,7 +224,7 @@ namespace AntennaHousePdf.Controllers
                         ReasonPhrase = "Exception"
                     };
                     throw new HttpResponseException(resp);
-                }*/
+                }
             }
             catch (HttpResponseException e)
             {
@@ -236,11 +236,16 @@ namespace AntennaHousePdf.Controllers
                 if (Session["graphicFolder"] != null)
                 {
                     Directory.Delete(Session["graphicFolder"].ToString(), true);
-                }/*
+                }
                 if (Session["UserId"] != null)
                 {
+                    DirectoryInfo di = new DirectoryInfo(Session["UserId"].ToString());
+                    foreach (FileInfo file in di.GetFiles())
+                    {
+                        file.Delete();
+                    }
                     Directory.Delete(Session["UserId"].ToString(), true);
-                }*/
+                }
             }
 
         }
