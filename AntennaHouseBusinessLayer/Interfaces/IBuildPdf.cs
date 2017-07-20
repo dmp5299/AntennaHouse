@@ -1,4 +1,5 @@
-﻿using System;
+﻿using AntennaHouseBusinessLayer.FOUtils;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Security.Permissions;
@@ -9,6 +10,6 @@ namespace AntennaHouseBusinessLayer.Interfaces
 {
     interface IBuildPdf
     {
-        void buildPdf();
+        PdfFile buildPdf(string pmFile, string project, string subProject = null, string footer = null);
     }
 }

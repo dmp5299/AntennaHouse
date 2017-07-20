@@ -31,6 +31,7 @@ using AntennaHouseBusinessLayer.Projects.FiftyThreeK;
 using AntennaHouseBusinessLayer.Projects.PWC;
 using AntennaHouseBusinessLayer.Projects.SB;
 using AntennaHouseBusinessLayer.Projects.Acrolinx;
+using AntennaHouseBusinessLayer.Projects.Rolls_Royce;
 
 namespace AntennaHousePdf.Controllers
 {
@@ -86,50 +87,25 @@ namespace AntennaHousePdf.Controllers
                             if (pdfParams.XmlFiles.Count > 1)
                             {
                                 string[] filesEntries = Directory.GetFiles(System.Web.HttpContext.Current.Session["UserId"].ToString());
-                                using (ZipFile zip = new ZipFile())
-                                {
-                                    foreach (string fileEntry in filesEntries)
-                                    {
-                                        PdfFile doc = UTC.buildPdf(fileEntry, pdfParams.Project, pdfParams.SubProject, pdfParams.Footer);
-                                        string[] xml = fileEntry.Split('\\');
-                                        string xmlFile1 = xml[xml.Length - 1];
-                                        xmlFile1 = xmlFile1.Replace(".XML", ".pdf");
-                                        zip.AddEntry(xmlFile1.Replace(".xml", ".pdf"), doc.PdfDoc.FileContents);
-                                    }
-                                    var memStream = new MemoryStream();
-                                    Response.AddHeader("Content-Disposition", "attachment; filename=Sbs.zip");
-                                    zip.Save(memStream);
-                                    memStream.Position = 0;
-                                    return File(memStream, "application/zip");
-                                }
+                                var memStream = UTC.buildZipFile(filesEntries, pdfParams.Project, pdfParams.SubProject, pdfParams.Footer);
+                                Response.AddHeader("Content-Disposition", "attachment; filename=Sbs.zip");
+                                return File(memStream, "application/zip");
                             }
                             else
                             {
                                 string[] arr = pdfParams.XmlFiles[0].FileName.Split('\\');
                                 string xmlFile = arr[arr.Length - 1];
-                                file = UTC.buildPdf(System.Web.HttpContext.Current.Session["UserId"].ToString() + "/" + xmlFile, pdfParams.Project, pdfParams.SubProject);
+                                file = UTC.buildPdf(System.Web.HttpContext.Current.Session["UserId"].ToString() + "/" + xmlFile, pdfParams.Project, pdfParams.SubProject,
+                                pdfParams.Footer);
                             }
                             break;
                         case "PWC":
                             if (pdfParams.XmlFiles.Count > 1)
                             {
                                 string[] filesEntries = Directory.GetFiles(System.Web.HttpContext.Current.Session["UserId"].ToString());
-                                using (ZipFile zip = new ZipFile())
-                                {
-                                    foreach (string fileEntry in filesEntries)
-                                    {
-                                        PdfFile doc = PwcSb.buildPdf(fileEntry, pdfParams.Project, pdfParams.SubProject);
-                                        string[] xml = fileEntry.Split('\\');
-                                        string xmlFile1 = xml[xml.Length - 1];
-                                        xmlFile1 = xmlFile1.Replace(".XML", ".pdf");
-                                        zip.AddEntry(xmlFile1.Replace(".xml", ".pdf"), doc.PdfDoc.FileContents);
-                                    }
-                                    var memStream = new MemoryStream();
-                                    Response.AddHeader("Content-Disposition", "attachment; filename=Sbs.zip");
-                                    zip.Save(memStream);
-                                    memStream.Position = 0;
-                                    return File(memStream, "application/zip");
-                                }
+                                var memStream = PwcSb.buildZipFile(filesEntries, pdfParams.Project, pdfParams.SubProject, pdfParams.Footer);
+                                Response.AddHeader("Content-Disposition", "attachment; filename=Sbs.zip");
+                                return File(memStream, "application/zip");
                             }
                             else
                             {
@@ -142,22 +118,9 @@ namespace AntennaHousePdf.Controllers
                             if (pdfParams.XmlFiles.Count > 1)
                             {
                                 string[] filesEntries = Directory.GetFiles(System.Web.HttpContext.Current.Session["UserId"].ToString());
-                                using (ZipFile zip = new ZipFile())
-                                {
-                                    foreach (string fileEntry in filesEntries)
-                                    {
-                                        PdfFile doc = FiftyThreeK.buildPdf(fileEntry, pdfParams.Project, pdfParams.SubProject);
-                                        string[] xml = fileEntry.Split('\\');
-                                        string xmlFile1 = xml[xml.Length - 1];
-                                        xmlFile1 = xmlFile1.Replace(".XML", ".pdf");
-                                        zip.AddEntry(xmlFile1.Replace(".xml", ".pdf"), doc.PdfDoc.FileContents);
-                                    }
-                                    var memStream = new MemoryStream();
-                                    Response.AddHeader("Content-Disposition", "attachment; filename=Sbs.zip");
-                                    zip.Save(memStream);
-                                    memStream.Position = 0;
-                                    return File(memStream, "application/zip");
-                                }
+                                var memStream = FiftyThreeK.buildZipFile(filesEntries, pdfParams.Project, pdfParams.SubProject);
+                                Response.AddHeader("Content-Disposition", "attachment; filename=Sbs.zip");
+                                return File(memStream, "application/zip");
                             }
                             else
                             {
@@ -167,6 +130,7 @@ namespace AntennaHousePdf.Controllers
                             }
                             break;
                         case "Rolls Royce":
+                            file = RollysRoyce.buildPdf(XmlOperations.FindPmFile(pdfParams.XmlFiles), pdfParams.Project, pdfParams.SubProject);
                             break;
                         case "AcroLinx":
                             string[] xmlfiles = Directory.GetFiles(System.Web.HttpContext.Current.Session["UserId"].ToString() + "/");

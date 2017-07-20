@@ -43,7 +43,6 @@ namespace AntennaHouseBusinessLayer.Projects.PointOne
             string xmlFile1 = xml[xml.Length - 1];
             xmlFile1 = xmlFile1.Replace(".xml", "");
             xmlFile1 = xmlFile1.Replace(".XML", "") + ".pdf";
-            MessageBox.Show(xmlFile1);
             FileContentResult file = new FileContentResult(pdfDoc, "application/pdf");
             return new PdfFile { FileName = xmlFile1, PdfDoc = file };
         }
