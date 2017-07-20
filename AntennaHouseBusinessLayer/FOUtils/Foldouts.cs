@@ -6,7 +6,7 @@ using System.Windows.Forms;
 using System.Xml.XPath;
 using System.Xml.Xsl;
 
-namespace AntennaHouseBusinessLayer.Library
+namespace AntennaHouseBusinessLayer.FOUtils
 {
     public class Foldouts
     {

@@ -22,11 +22,11 @@ using System.Collections;
 using System.Web.Configuration;
 using AntennaHouseBusinessLayer.XmlUtils;
 
-namespace AntennaHouseBusinessLayer.Library
+namespace AntennaHouseBusinessLayer.FOUtils
 {
     public class CreateDocument
     {
-        public Processor createProcessor()
+        public static Processor createProcessor()
         {
             Processor processor = new Processor();
             processor.RegisterExtensionFunction(new AntennaHousePdf.SaxonExtensions.FileCheck());
@@ -34,12 +34,13 @@ namespace AntennaHouseBusinessLayer.Library
             processor.RegisterExtensionFunction(new AntennaHousePdf.SaxonExtensions.SbFooter());
             processor.RegisterExtensionFunction(new AntennaHousePdf.SaxonExtensions.SubProject());
             processor.RegisterExtensionFunction(new AntennaHousePdf.SaxonExtensions.GetReferences());
+            processor.RegisterExtensionFunction(new AntennaHousePdf.SaxonExtensions.ATAExt());
             return processor;
         }
         
 
         [FileIOPermissionAttribute(SecurityAction.Demand, Unrestricted = true)]
-        public byte[] SaxonBuild(string xml, string project, string subProject = null, Boolean foldout = false)
+        public static byte[] SaxonBuild(string xml, string project, string subProject = null, Boolean foldout = false)
         {
             var myUniqueFileName = string.Format(@"C:/inetpub/wwwroot/tempPdf/{0}.pdf", DateTime.Now.Ticks);
             byte[] pdf = null;

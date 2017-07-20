@@ -99,7 +99,10 @@
     <Compile Include="Factories\BuildDmBuilder.cs" />
     <Compile Include="Factories\FileUploadFactory.cs" />
     <Compile Include="Factories\XmlPopulatorFactory.cs" />
+    <Compile Include="FiftyThreeK\FiftyThreeKOps.cs" />
+    <Compile Include="FileUtils\FileOperations.cs" />
     <Compile Include="Interfaces\IBuildDm.cs" />
+    <Compile Include="Interfaces\IBuildPdf.cs" />
     <Compile Include="Interfaces\IRefDm.cs" />
     <Compile Include="Interfaces\IUploadFiles.cs" />
     <Compile Include="Interfaces\IXmlPopulator.cs" />
@@ -110,6 +113,14 @@
     <Compile Include="FOUtils\Foldouts.cs" />
     <Compile Include="Mail\Mail.cs" />
     <Compile Include="DataModuleCreation\NumIndexDm4Point1.cs" />
+    <Compile Include="Projects\4PointOne\Pratt.cs" />
+    <Compile Include="Projects\Acrolinx\AcroLinx.cs" />
+    <Compile Include="Projects\FiftyThreeK\FiftyThreeK.cs" />
+    <Compile Include="Projects\CMM\Utas.cs" />
+    <Compile Include="Projects\PWC\PwcSb.cs" />
+    <Compile Include="Projects\Rolls-Royce\RollysRoyce.cs" />
+    <Compile Include="Projects\SB\UTC.cs" />
+    <Compile Include="SaxonExtensions\ATAExt.cs" />
     <Compile Include="XmlObjects\RefDm.cs" />
     <Compile Include="XmlObjects\RefDm53K.cs" />
     <Compile Include="XmlUtils\MergePm.cs" />
@@ -119,11 +130,11 @@
     <Compile Include="XmlUtils\PmDate.cs" />
     <Compile Include="XmlUtils\References.cs" />
     <Compile Include="FileUtils\ReplacementOperations.cs" />
-    <Compile Include="53K\SuppliesPopulator.cs" />
-    <Compile Include="53K\SupportEquipmentPopulator.cs" />
+    <Compile Include="FiftyThreeK\SuppliesPopulator.cs" />
+    <Compile Include="FiftyThreeK\SupportEquipmentPopulator.cs" />
     <Compile Include="FileUtils\UploadGraphicFiles.cs" />
     <Compile Include="FileUtils\UploadXmlFiles.cs" />
-    <Compile Include="53K\WarningPopulator.cs" />
+    <Compile Include="FiftyThreeK\WarningPopulator.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="SaxonExtensions\FileChek.cs" />
     <Compile Include="SaxonExtensions\getGraphicPath.cs" />
@@ -134,12 +145,14 @@
     <Compile Include="Tools\SupportEquipmentAndSupplies.cs" />
     <Compile Include="Tools\Warning.cs" />
     <Compile Include="CustomExceptions\ZippedPdfException.cs" />
+    <Compile Include="XmlUtils\XmlOperations.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />
     <EmbeddedResource Include="Entities\entities.ent" />
     <None Include="packages.config" />
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

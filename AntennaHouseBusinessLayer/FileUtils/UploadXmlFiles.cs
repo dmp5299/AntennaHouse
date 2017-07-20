@@ -5,7 +5,7 @@ using System.Linq;
 using System.Web;
 using AntennaHouseBusinessLayer.Interfaces;
 
-namespace AntennaHouseBusinessLayer.Library
+namespace AntennaHouseBusinessLayer.FileUtils
 {
     public class UploadXmlFiles : IUploadFiles
     {

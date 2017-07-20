@@ -4,8 +4,6 @@ using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 using AntennaHousePdf.Models;
-using AntennaHousePdf.Library;
-using AntennaHouseBusinessLayer.Library;
 using System.IO;
 using XfoDotNetCtl;
 using System.Windows.Forms;
@@ -22,6 +20,17 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System.Xml.Linq;
 using AntennaHouseBusinessLayer.Factories;
 using System.Text;
+using AntennaHouseBusinessLayer.FOUtils;
+using AntennaHousePdf.FileUtils;
+using AntennaHouseBusinessLayer.FileUtils;
+using AntennaHouseBusinessLayer.XmlUtils;
+using AntennaHouseBusinessLayer.Mail;
+using AntennaHouseBusinessLayer.Projects.CMM;
+using AntennaHouseBusinessLayer.Projects.PointOne;
+using AntennaHouseBusinessLayer.Projects.FiftyThreeK;
+using AntennaHouseBusinessLayer.Projects.PWC;
+using AntennaHouseBusinessLayer.Projects.SB;
+using AntennaHouseBusinessLayer.Projects.Acrolinx;
 
 namespace AntennaHousePdf.Controllers
 {
@@ -39,90 +48,136 @@ namespace AntennaHousePdf.Controllers
                 return RedirectToAction("Login", "Home", new { area = "" });
             }
         }
-
-        public byte[] processZipDocuments(string fileEntry, AntennaPdf pdfParams, CreateDocument doc1, GetPdf builder)
+        
+        [System.Web.Mvc.HttpPost]
+        public string FilleDropDown(string project)
         {
-            try
-            {
-                if (pdfParams.Project == "53K")
-                {
-
-                    Replace replacement = new Replace(Session["UserId"].ToString() + "/" + Path.GetFileName(fileEntry), "<!NOTATION cgm SYSTEM>", "");
-                    replacement.replaceContentText();
-                    replacement = new Replace(Session["UserId"].ToString() + "/" + Path.GetFileName(fileEntry), "encoding=\"UTF-16\"", "");
-                    replacement.replaceContentText();
-
-                    builder.fill53K(Path.GetFileName(fileEntry));
-
-                }
-                return doc1.SaxonBuild(fileEntry, pdfParams.Project, pdfParams.Project == "SB" ? pdfParams.SubProjectSB : null);
-            }
-            catch (XfoException e)
-            {
-                throw new XfoException(0, 0, fileEntry + " " + e.Message);
-            }
-            catch (NullReferenceException e)
-            {
-                throw new NullReferenceException(fileEntry + " " + e.Message);
-            }
-            catch (XmlException e)
-            {
-                throw new XmlException(fileEntry + " " + e.Message);
-            }
-            catch (Exception e)
-            {
-                throw new XmlException(fileEntry + " " + e.Message);
-            }
+            return AntennaPdf.getSubProjects(project);
         }
 
         [System.Web.Mvc.HttpPost]
         public ActionResult Index(AntennaPdf pdfParams)
         {
-            CreateDocument doc1 = new CreateDocument();
             try
             {
                 try
                 {
-                    GetPdf builder = new GetPdf(pdfParams);
-
-                    if (pdfParams.Project == "CMM" || pdfParams.Project == "Rolls Royce" || pdfParams.XmlFiles.Count == 1)
+                    UploadGraphicFiles uploadGraphicFiles = new UploadGraphicFiles();
+                    UploadXmlFiles uploadXmlFiles = new UploadXmlFiles();
+                    uploadXmlFiles.uploadFiles(pdfParams.XmlFiles, "UserId", (pdfParams.Project == "CMM"));
+                    if (pdfParams.Graphics[0] != null)
                     {
-                        PdfFile file = builder.createDocument();
-                        Response.AddHeader("Content-Disposition", new System.Net.Mime.ContentDisposition("attachment") { FileName = file.FileName.Replace(".XML", ".pdf") }.ToString());
-                        Response.ContentType = "application/pdf";
-                        return file.PdfDoc;
+                        uploadGraphicFiles.uploadFiles(pdfParams.Graphics, "graphicFolder");
                     }
                     else
                     {
-                        if (pdfParams.SubProjectSB == "Airbus")
-                        {
-                            System.Web.HttpContext.Current.Session["sbFooter"] = pdfParams.Footer;
-                        }
-                        using (ZipFile zip = new ZipFile())
-                        {
-                            UploadGraphicFiles uploadg = new UploadGraphicFiles();
-                            UploadXmlFiles uploadx = new UploadXmlFiles();
-                            if (pdfParams.Graphics[0] != null) { uploadg.uploadFiles(pdfParams.Graphics, "graphicFolder"); }
-
-                            uploadx.uploadFiles(pdfParams.XmlFiles, "UserId");
-                            string[] filesEntries = Directory.GetFiles(Session["UserId"].ToString());
-                            foreach (string fileEntry in filesEntries)
-                            {
-                                byte[] doc = processZipDocuments(fileEntry, pdfParams, doc1, builder);
-                                var pdfDoc = doc;
-                                string[] xml = fileEntry.Split('\\');
-                                string xmlFile1 = xml[xml.Length - 1];
-                                xmlFile1 = xmlFile1.Replace(".XML", ".pdf");
-                                zip.AddEntry(xmlFile1.Replace(".xml", ".pdf"), pdfDoc);
-                            }
-                            var memStream = new MemoryStream();
-                            Response.AddHeader("Content-Disposition", "attachment; filename=Sbs.zip");
-                            zip.Save(memStream);
-                            memStream.Position = 0;
-                            return File(memStream, "application/zip");
-                        }
+                        Session.Remove("graphicFolder");
                     }
+                    PdfFile file = null;
+                    switch (pdfParams.Project)
+                    {
+                        case "CMM":
+                            file = Utas.buildPdf(XmlOperations.FindPmFile(pdfParams.XmlFiles), pdfParams.Project, pdfParams.SubProject);
+                            break;
+                        case "4.1":
+                            file = Pratt.buildPdf(XmlOperations.FindPmFile(pdfParams.XmlFiles), pdfParams.Project, pdfParams.SubProject);
+                            break;
+                        case "SB":
+                            if (pdfParams.XmlFiles.Count > 1)
+                            {
+                                string[] filesEntries = Directory.GetFiles(System.Web.HttpContext.Current.Session["UserId"].ToString());
+                                using (ZipFile zip = new ZipFile())
+                                {
+                                    foreach (string fileEntry in filesEntries)
+                                    {
+                                        PdfFile doc = UTC.buildPdf(fileEntry, pdfParams.Project, pdfParams.SubProject, pdfParams.Footer);
+                                        string[] xml = fileEntry.Split('\\');
+                                        string xmlFile1 = xml[xml.Length - 1];
+                                        xmlFile1 = xmlFile1.Replace(".XML", ".pdf");
+                                        zip.AddEntry(xmlFile1.Replace(".xml", ".pdf"), doc.PdfDoc.FileContents);
+                                    }
+                                    var memStream = new MemoryStream();
+                                    Response.AddHeader("Content-Disposition", "attachment; filename=Sbs.zip");
+                                    zip.Save(memStream);
+                                    memStream.Position = 0;
+                                    return File(memStream, "application/zip");
+                                }
+                            }
+                            else
+                            {
+                                string[] arr = pdfParams.XmlFiles[0].FileName.Split('\\');
+                                string xmlFile = arr[arr.Length - 1];
+                                file = UTC.buildPdf(System.Web.HttpContext.Current.Session["UserId"].ToString() + "/" + xmlFile, pdfParams.Project, pdfParams.SubProject);
+                            }
+                            break;
+                        case "PWC":
+                            if (pdfParams.XmlFiles.Count > 1)
+                            {
+                                string[] filesEntries = Directory.GetFiles(System.Web.HttpContext.Current.Session["UserId"].ToString());
+                                using (ZipFile zip = new ZipFile())
+                                {
+                                    foreach (string fileEntry in filesEntries)
+                                    {
+                                        PdfFile doc = PwcSb.buildPdf(fileEntry, pdfParams.Project, pdfParams.SubProject);
+                                        string[] xml = fileEntry.Split('\\');
+                                        string xmlFile1 = xml[xml.Length - 1];
+                                        xmlFile1 = xmlFile1.Replace(".XML", ".pdf");
+                                        zip.AddEntry(xmlFile1.Replace(".xml", ".pdf"), doc.PdfDoc.FileContents);
+                                    }
+                                    var memStream = new MemoryStream();
+                                    Response.AddHeader("Content-Disposition", "attachment; filename=Sbs.zip");
+                                    zip.Save(memStream);
+                                    memStream.Position = 0;
+                                    return File(memStream, "application/zip");
+                                }
+                            }
+                            else
+                            {
+                                string[] arr = pdfParams.XmlFiles[0].FileName.Split('\\');
+                                string xmlFile = arr[arr.Length - 1];
+                                file = PwcSb.buildPdf(System.Web.HttpContext.Current.Session["UserId"].ToString() + "/" + xmlFile, pdfParams.Project, pdfParams.SubProject);
+                            }
+                            break;
+                        case "53K":
+                            if (pdfParams.XmlFiles.Count > 1)
+                            {
+                                string[] filesEntries = Directory.GetFiles(System.Web.HttpContext.Current.Session["UserId"].ToString());
+                                using (ZipFile zip = new ZipFile())
+                                {
+                                    foreach (string fileEntry in filesEntries)
+                                    {
+                                        PdfFile doc = FiftyThreeK.buildPdf(fileEntry, pdfParams.Project, pdfParams.SubProject);
+                                        string[] xml = fileEntry.Split('\\');
+                                        string xmlFile1 = xml[xml.Length - 1];
+                                        xmlFile1 = xmlFile1.Replace(".XML", ".pdf");
+                                        zip.AddEntry(xmlFile1.Replace(".xml", ".pdf"), doc.PdfDoc.FileContents);
+                                    }
+                                    var memStream = new MemoryStream();
+                                    Response.AddHeader("Content-Disposition", "attachment; filename=Sbs.zip");
+                                    zip.Save(memStream);
+                                    memStream.Position = 0;
+                                    return File(memStream, "application/zip");
+                                }
+                            }
+                            else
+                            {
+                                string[] arr = pdfParams.XmlFiles[0].FileName.Split('\\');
+                                string xmlFile = arr[arr.Length - 1];
+                                file = FiftyThreeK.buildPdf(System.Web.HttpContext.Current.Session["UserId"].ToString() + "/" + xmlFile, pdfParams.Project, pdfParams.SubProject);
+                            }
+                            break;
+                        case "Rolls Royce":
+                            break;
+                        case "AcroLinx":
+                            string[] xmlfiles = Directory.GetFiles(System.Web.HttpContext.Current.Session["UserId"].ToString() + "/");
+                            file = AcroLinx.buildPdf(xmlfiles, pdfParams.Project, pdfParams.SubProject);
+                            break;
 
+                    }
+                    Response.AddHeader("Content-Disposition", new System.Net.Mime.ContentDisposition("attachment")
+                    { FileName = file.FileName.Replace(".XML", ".pdf") }.ToString());
+                    Response.ContentType = "application/pdf";
+                    return file.PdfDoc;
                 }
                 catch (ArgumentNullException e)
                 {

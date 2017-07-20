@@ -9,7 +9,7 @@ using AntennaHouseBusinessLayer.Tools;
 using System.Configuration;
 using System.Windows.Forms;
 
-namespace AntennaHouseBusinessLayer.Library
+namespace AntennaHouseBusinessLayer.FiftyThreeK
 {
     public class SupportEquipmentPopulator: IXmlPopulator
     {

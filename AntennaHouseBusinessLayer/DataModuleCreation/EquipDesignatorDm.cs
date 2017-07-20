@@ -8,7 +8,7 @@ using System.Windows.Forms;
 using System.Xml;
 using AntennaHouseBusinessLayer.Interfaces;
 
-namespace AntennaHouseBusinessLayer.Library
+namespace AntennaHouseBusinessLayer.DataModuleCreation
 {
     public class EquipDesignator
     {

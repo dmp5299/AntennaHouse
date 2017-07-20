@@ -1,7 +1,7 @@
 ﻿<head>
     <meta name="viewport" content="width=device-width" />
     <title>Index</title>
-    <link rel="stylesheet" type="text/css" href="~/JqTheme/jquery-ui.css" />
+    <link rel="stylesheet" type="text/css" href="~/JqTheme/jquery-ui.css" /><link rel="shortcut icon" type="image/png" href="~/icons/rcmIcon.ico" />
     <link href="~/Content/jquery.jqGrid/ui.jqgrid.css" rel="stylesheet" />
     <link rel="stylesheet" type="text/css" media="screen" href="http://trirand.com/blog/jqgrid/themes/ui.multiselect.css" />
     <link href="~/Content/bootstrap.min.css" rel="stylesheet" />
@@ -21,7 +21,31 @@
     <script src="https://code.highcharts.com/highcharts.js"></script>
     <script src="https://code.highcharts.com/modules/exporting.js"></script>
     <script>
+        function setSubDropdown(projectName) {
+            $.ajax({
+                type: "POST",
+                url: "/PdfBuilder/FilleDropDown", data: { project: projectName }, success: function (result) {
+                    $("#subproject").html(result);
+                },
+                error: function (XMLHttpRequest, textStatus, errorThrown) {
+                    alert("Status: " + textStatus); alert("Error: " + errorThrown);
+                }
+            });
+        }
         $(function () {
+            $('#baseProject').change(function () {
+                if ($("select option:selected").val() == "Select Project") {
+                    $('#subprojectblock').hide();
+                    $('#Footer').hide();
+                    $('#buildPdfButton').addClass('disabled');
+                }
+                else {
+                    $('#buildPdfButton').removeClass('disabled');
+                    $('#subprojectblock').show();
+                    setSubDropdown($('#baseProject').val());
+                }
+            });
+
             var pageWidth = $("#grid").parent().width() - 15;
             "use strict";
             var mydata = [
@@ -213,7 +237,7 @@
                     $form.closest(".ui-jqdialog").css({ height: "auto" });
                 }
             });
-
+            
             $("#list").jqGrid({
                 datatype: "local",
                 data: mydata,

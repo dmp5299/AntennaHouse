@@ -10,7 +10,7 @@ using System.Xml;
 using System.Configuration;
 using System.Windows.Forms;
 
-namespace AntennaHouseBusinessLayer.Library
+namespace AntennaHouseBusinessLayer.FiftyThreeK
 {
     public class WarningPopulator : IXmlPopulator
     {

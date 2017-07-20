@@ -5,6 +5,7 @@ using System.Web;
 using System.Web.UI;
 using System.Web.UI.WebControls;
 using System.Windows.Forms;
+using System.Web.Mvc;
 using XfoDotNetCtl;
 using System.Xml;
 using System.Xml.Resolvers;
@@ -14,7 +15,6 @@ using System.Reflection;
 using System.Security.Permissions;
 using System.Xml.Xsl;
 using System.Xml.XPath;
-using System.Web.Mvc;
 using System.Collections.Generic;
 using System.Configuration;
 using Saxon.Api;
@@ -54,26 +54,38 @@ namespace AntennaHousePdf.Models
             string[] projects = Directory.GetDirectories(ConfigurationManager.AppSettings["projectDirectory"]);
             List<SelectListItem> items = new List<SelectListItem>();
             Boolean selected=false;
+            items.Add(new SelectListItem { Text = "Select Project", Value = "Select Project", Selected = selected });
             for (int i = 0; i < projects.Length; i++)
             {
                 projects[i] = new DirectoryInfo(projects[i]).Name;
-                if (projects[i] == "SB") selected = true;
-                items.Add(new SelectListItem { Text = projects[i], Value = projects[i], Selected=selected });
+                items.Add(new SelectListItem { Text = projects[i], Value = projects[i] });
                 selected = false;
             }
             return items;
         }
-
-        public static List<SelectListItem> getSubProjects(string project)
+        
+        public static string getSubProjects(string project)
         {
-            string[] projects = Directory.GetDirectories(ConfigurationManager.AppSettings["projectDirectory"]+"/"+ project+"/");
-            List<SelectListItem> items = new List<SelectListItem>();
-            Boolean selected = false;
+            string[] projects = Directory.GetDirectories(ConfigurationManager.AppSettings["projectDirectory"] + "/" + project + "/");
+            string items = "";
+            string selectedItem = "";
+            if (HttpContext.Current.Session["subProject"] != null)
+            {
+                selectedItem = HttpContext.Current.Session["subProject"].ToString();
+            }
             for (int i = 0; i < projects.Length; i++)
             {
                 projects[i] = new DirectoryInfo(projects[i]).Name;
-                items.Add(new SelectListItem { Text = projects[i], Value = projects[i], Selected = selected });
+                if (projects[i] == selectedItem)
+                {
+                    items += "<option value='" + projects[i] + "' selected>" + projects[i] + "</option>";
+                }
+                else
+                {
+                    items += "<option value='" + projects[i] + "'>" + projects[i] + "</option>";
+                }
             }
+            HttpContext.Current.Session.Remove("subProject");
             return items;
         }
 

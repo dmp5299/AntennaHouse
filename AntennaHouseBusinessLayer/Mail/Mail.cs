@@ -7,7 +7,7 @@ using System.Net.Mail;
 using System.Windows.Forms;
 using System.Net;
 
-namespace AntennaHouseBusinessLayer.Library
+namespace AntennaHouseBusinessLayer.Mail
 {
     public class Mail
     {

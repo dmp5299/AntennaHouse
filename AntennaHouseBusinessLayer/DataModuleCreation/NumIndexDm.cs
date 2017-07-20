@@ -7,8 +7,9 @@ using System.Web;
 using System.Xml;
 using AntennaHouseBusinessLayer.Interfaces;
 using System.Windows.Forms;
+using AntennaHouseBusinessLayer.XmlUtils;
 
-namespace AntennaHouseBusinessLayer.Library
+namespace AntennaHouseBusinessLayer.DataModuleCreation
 {
     class NumericalIndex
     {
@@ -64,8 +65,8 @@ namespace AntennaHouseBusinessLayer.Library
             dmCode.Attributes.Append(disassyCodeVariant);
 
             XmlAttribute infoCode = doc.CreateAttribute("infoCode");
-            infoCode.InnerText = "013";
-             dmCode.Attributes.Append(infoCode);
+            infoCode.InnerText = "942";
+            dmCode.Attributes.Append(infoCode);
 
             XmlAttribute infoCodeVariant = doc.CreateAttribute("infoCodeVariant");
             infoCodeVariant.InnerText = "A";
@@ -359,34 +360,34 @@ namespace AntennaHouseBusinessLayer.Library
             tgroup.AppendChild(thead);
             XmlNode tbody = doc.CreateElement("tbody");
 
-                List<NumericalIndex> SortedList = NumIndexList.OrderBy(o => o.PartNumber).ToList();
-                foreach (NumericalIndex index in SortedList)
-                {
-                    XmlAttribute align1 = doc.CreateAttribute("align");
-                    align1.InnerText = "center";
-                    XmlNode row = doc.CreateElement("row");
-                    XmlNode entry = doc.CreateElement("entry");
-                    XmlNode para1 = doc.CreateElement("para");
-                    para1.InnerText = index.PartNumber;
-                    entry.AppendChild(para1);
-                    XmlNode entry1 = doc.CreateElement("entry");
-                    XmlAttribute align2 = doc.CreateAttribute("align");
-                    align2.InnerText = "center";
-                    XmlNode para = doc.CreateElement("para");
-                    para.InnerText = index.Qpnha;
-                    entry1.AppendChild(para);
-                    XmlNode entry2 = doc.CreateElement("entry");
-                    XmlAttribute align3 = doc.CreateAttribute("align");
-                    align3.InnerText = "center";
-                    entry2.Attributes.Append(align3);
-                    XmlNode para3 = doc.CreateElement("para");
-                    para3.InnerText = index.CatalogSeq;
-                    entry2.AppendChild(para3);
-                    row.AppendChild(entry);
-                    row.AppendChild(entry1);
-                    row.AppendChild(entry2);
-                    tbody.AppendChild(row);
-                }
+            List<NumericalIndex> SortedList = NumIndexList.OrderBy(o => o.PartNumber).ToList();
+            foreach (NumericalIndex index in SortedList)
+            {
+                XmlAttribute align1 = doc.CreateAttribute("align");
+                align1.InnerText = "center";
+                XmlNode row = doc.CreateElement("row");
+                XmlNode entry = doc.CreateElement("entry");
+                XmlNode para1 = doc.CreateElement("para");
+                para1.InnerText = index.PartNumber;
+                entry.AppendChild(para1);
+                XmlNode entry1 = doc.CreateElement("entry");
+                XmlAttribute align2 = doc.CreateAttribute("align");
+                align2.InnerText = "center";
+                XmlNode para = doc.CreateElement("para");
+                para.InnerText = index.Qpnha;
+                entry1.AppendChild(para);
+                XmlNode entry2 = doc.CreateElement("entry");
+                XmlAttribute align3 = doc.CreateAttribute("align");
+                align3.InnerText = "center";
+                entry2.Attributes.Append(align3);
+                XmlNode para3 = doc.CreateElement("para");
+                para3.InnerText = index.CatalogSeq;
+                entry2.AppendChild(para3);
+                row.AppendChild(entry);
+                row.AppendChild(entry1);
+                row.AppendChild(entry2);
+                tbody.AppendChild(row);
+            }
             tgroup.AppendChild(tbody);
             table.AppendChild(tgroup);
             content.AppendChild(table);
@@ -404,7 +405,7 @@ namespace AntennaHouseBusinessLayer.Library
 
         public void getDmFiles()
         {
-            var files = Directory.GetFiles(Location).Where(name => name.EndsWith(".xml"));
+            var files = Directory.GetFiles(Location).Where(name => name.EndsWith(".xml") || name.EndsWith(".XML"));
             foreach (string file in files)
             {
                 if (!file.Contains("PM") && !file.Contains("pm"))
@@ -416,40 +417,44 @@ namespace AntennaHouseBusinessLayer.Library
 
         public List<XmlNode> getNodes()
         {
-            XmlDocument doc = new XmlDocument();
-            doc.Load(DmFiles[0].Replace(@"\","/"));
-            XmlNode dmCode = doc.SelectSingleNode("descendant::dmCode[1]");
-            XmlNode issueDate = doc.SelectSingleNode("descendant::issueDate[1]");
             List<XmlNode> list = new List<XmlNode>();
-            list.Add(dmCode);
-            list.Add(issueDate);
-            foreach (string file in DmFiles)
+            XmlDocument doc = new XmlDocument();
+            doc.XmlResolver = new MyXmlUrlResolver();
+            doc.Load(DmFiles[0].Replace(@"\", "/"));
+            try
             {
-                if (!file.Contains("-013A-") && !file.Contains("-014A-"))
+                XmlNode dmCode = doc.SelectSingleNode("descendant::dmCode[1]");
+                XmlNode issueDate = doc.SelectSingleNode("descendant::issueDate[1]");
+
+                list.Add(dmCode);
+                list.Add(issueDate);
+                foreach (string file in DmFiles)
                 {
-                    doc.Load(file);
-                    XmlNodeList catalogSeqNumbers = doc.SelectNodes("descendant::catalogSeqNumber");
-                    foreach (XmlNode catalogSeqNumber in catalogSeqNumbers)
+                    if (!file.Contains("-942A-") && !file.Contains("-014A-"))
                     {
-                        XmlNode partNumber = catalogSeqNumber.SelectSingleNode("descendant::partNumber");
-                        XmlNode quantityPerNextHigherAssy = catalogSeqNumber.SelectSingleNode("descendant::quantityPerNextHigherAssy");
-                        string catalogSeqNumberValue = catalogSeqNumber.Attributes["catalogSeqNumberValue"].InnerText;
-                        catalogSeqNumberValue = catalogSeqNumberValue.Replace(" ", "");
-                        string first = catalogSeqNumberValue.Substring(0, 2);
-                        string second = catalogSeqNumberValue.Substring(2, 2);
-                        string third = catalogSeqNumberValue.Substring(4, 2);
-                        string fourth = catalogSeqNumberValue.Substring(6, 3);
-                        string fifth = catalogSeqNumberValue.Substring(9);
-                        
-                        NumericalIndex n = new NumericalIndex
+                        doc.Load(file);
+                        XmlNodeList catalogSeqNumbers = doc.SelectNodes("descendant::catalogSeqNumber");
+
+                        foreach (XmlNode catalogSeqNumber in catalogSeqNumbers)
                         {
-                            PartNumber = partNumber.InnerText,
-                            Qpnha = quantityPerNextHigherAssy.InnerText,
-                            CatalogSeq = fourth + '-' + fifth
-                        };
-                        NumIndexList.Add(n);
+                            XmlNode partNumber = catalogSeqNumber.SelectSingleNode("descendant::partNumber");
+                            XmlNode quantityPerNextHigherAssy = catalogSeqNumber.SelectSingleNode("descendant::quantityPerNextHigherAssy");
+                            string catalogSeqNumberValue = catalogSeqNumber.Attributes["catalogItemNumber"].InnerText;
+
+                            NumericalIndex n = new NumericalIndex
+                            {
+                                PartNumber = partNumber.InnerText,
+                                Qpnha = quantityPerNextHigherAssy.InnerText,
+                                CatalogSeq = catalogSeqNumberValue
+                            };
+                            NumIndexList.Add(n);
+                        }
                     }
                 }
+            }
+            catch (NullReferenceException)
+            {
+                throw new NullReferenceException("Xml format is incorrect, use S1000D4.0 Xml for this project.");
             }
             return list;
         }

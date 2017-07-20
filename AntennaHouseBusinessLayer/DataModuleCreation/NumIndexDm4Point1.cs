@@ -8,7 +8,7 @@ using System.Xml;
 using AntennaHouseBusinessLayer.Interfaces;
 using System.Windows.Forms;
 
-namespace AntennaHouseBusinessLayer.Library
+namespace AntennaHouseBusinessLayer.DataModuleCreation
 {
     public class NumIndexDm4Point1 : IBuildDm
     {

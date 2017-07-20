@@ -5,7 +5,7 @@ using System.Web;
 using AntennaHouseBusinessLayer.Interfaces;
 using System.IO;
 
-namespace AntennaHouseBusinessLayer.Library
+namespace AntennaHouseBusinessLayer.FileUtils
 {
     public class UploadGraphicFiles : IUploadFiles
     {

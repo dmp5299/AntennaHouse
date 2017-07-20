@@ -4,8 +4,6 @@ using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 using AntennaHousePdf.Models;
-using AntennaHousePdf.Library;
-using AntennaHouseBusinessLayer.Library;
 using System.IO;
 using XfoDotNetCtl;
 using System.Windows.Forms;
