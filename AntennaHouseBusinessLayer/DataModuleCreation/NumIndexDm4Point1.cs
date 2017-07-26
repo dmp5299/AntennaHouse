@@ -7,6 +7,7 @@ using System.Web;
 using System.Xml;
 using AntennaHouseBusinessLayer.Interfaces;
 using System.Windows.Forms;
+using System.Reflection;
 
 namespace AntennaHouseBusinessLayer.DataModuleCreation
 {
@@ -14,6 +15,7 @@ namespace AntennaHouseBusinessLayer.DataModuleCreation
     {
         string Location { get; }
         public List<string> DmFiles { get; }
+        public XmlNode NumIndexRef { get; set; }
         List<NumericalIndex> NumIndexList { get; }
 
         public NumIndexDm4Point1(string xmlFolder)
@@ -46,14 +48,14 @@ namespace AntennaHouseBusinessLayer.DataModuleCreation
             XmlNode dmCode = doc.CreateElement("dmCode");
 
             XmlAttribute assyCode = doc.CreateAttribute("assyCode");
-            assyCode.InnerText = nodes[0].Attributes["assyCode"].InnerText;
+            assyCode.InnerText = NumIndexRef.Attributes["assyCode"].InnerText;
             dmCode.Attributes.Append(assyCode);
             XmlAttribute disassyCode = doc.CreateAttribute("disassyCode");
-            disassyCode.InnerText = nodes[0].Attributes["disassyCode"].InnerText;
+            disassyCode.InnerText = NumIndexRef.Attributes["disassyCode"].InnerText;
             dmCode.Attributes.Append(disassyCode);
 
             XmlAttribute disassyCodeVariant = doc.CreateAttribute("disassyCodeVariant");
-            disassyCodeVariant.InnerText = nodes[0].Attributes["disassyCodeVariant"].InnerText;
+            disassyCodeVariant.InnerText = NumIndexRef.Attributes["disassyCodeVariant"].InnerText;
             dmCode.Attributes.Append(disassyCodeVariant);
 
             XmlAttribute infoCode = doc.CreateAttribute("infoCode");
@@ -65,27 +67,27 @@ namespace AntennaHouseBusinessLayer.DataModuleCreation
             dmCode.Attributes.Append(infoCodeVariant);
 
             XmlAttribute itemLocationCode = doc.CreateAttribute("itemLocationCode");
-            itemLocationCode.InnerText = nodes[0].Attributes["itemLocationCode"].InnerText;
+            itemLocationCode.InnerText = NumIndexRef.Attributes["itemLocationCode"].InnerText;
             dmCode.Attributes.Append(itemLocationCode);
 
             XmlAttribute modelIdentCode = doc.CreateAttribute("modelIdentCode");
-            modelIdentCode.InnerText = nodes[0].Attributes["modelIdentCode"].InnerText;
+            modelIdentCode.InnerText = NumIndexRef.Attributes["modelIdentCode"].InnerText;
             dmCode.Attributes.Append(modelIdentCode);
 
             XmlAttribute subSubSystemCode = doc.CreateAttribute("subSubSystemCode");
-            subSubSystemCode.InnerText = nodes[0].Attributes["subSubSystemCode"].InnerText;
+            subSubSystemCode.InnerText = NumIndexRef.Attributes["subSubSystemCode"].InnerText;
             dmCode.Attributes.Append(subSubSystemCode);
 
             XmlAttribute subSystemCode = doc.CreateAttribute("subSystemCode");
-            subSystemCode.InnerText = nodes[0].Attributes["subSystemCode"].InnerText;
+            subSystemCode.InnerText = NumIndexRef.Attributes["subSystemCode"].InnerText;
             dmCode.Attributes.Append(subSystemCode);
 
             XmlAttribute systemCode = doc.CreateAttribute("systemCode");
-            systemCode.InnerText = nodes[0].Attributes["systemCode"].InnerText;
+            systemCode.InnerText = NumIndexRef.Attributes["systemCode"].InnerText;
             dmCode.Attributes.Append(systemCode);
 
             XmlAttribute systemDiffCode = doc.CreateAttribute("systemDiffCode");
-            systemDiffCode.InnerText = nodes[0].Attributes["systemDiffCode"].InnerText;
+            systemDiffCode.InnerText = NumIndexRef.Attributes["systemDiffCode"].InnerText;
             dmCode.Attributes.Append(systemDiffCode);
 
             dmIdent.AppendChild(dmCode);
@@ -403,6 +405,36 @@ namespace AntennaHouseBusinessLayer.DataModuleCreation
                 if (!file.Contains("PM") && !file.Contains("pm"))
                 {
                     DmFiles.Add(file);
+                }
+                else
+                {
+                    NumIndexRef = getDmRef(file);
+                }
+            }
+        }
+
+        public XmlNode getDmRef(string pmFile)
+        {
+            XmlReaderSettings settings = new XmlReaderSettings();
+            settings.XmlResolver = null;
+            settings.DtdProcessing = DtdProcessing.Ignore;
+            XmlDocument doc = new XmlDocument();
+            using (StreamReader stream = new System.IO.StreamReader(pmFile, true))
+            {
+                using (XmlReader pm = XmlReader.Create(stream, settings))
+                {
+                    PropertyInfo propertyInfo = pm.GetType().GetProperty("DisableUndeclaredEntityCheck", BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic);
+                    propertyInfo.SetValue(pm, true);
+                    while (pm.ReadToFollowing("dmCode"))
+                    {
+                        pm.MoveToAttribute("infoCode");
+                        if (pm.Value == "942")
+                        {
+                            pm.MoveToElement();
+                            return doc.ReadNode(pm);
+                        }
+                    }
+                    throw new XmlException("A 942 dmRef is not present in the pm");
                 }
             }
         }

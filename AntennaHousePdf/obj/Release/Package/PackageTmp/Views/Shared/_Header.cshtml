@@ -37,6 +37,7 @@
                 if ($("select option:selected").val() == "Select Project") {
                     $('#subprojectblock').hide();
                     $('#Footer').hide();
+                    $('#TitlePage').hide();
                     $('#buildPdfButton').addClass('disabled');
                 }
                 else {
@@ -244,8 +245,8 @@
                 colNames: ['id', 'ExCol1', 'ExCol2', 'ExCol3', 'ExCol4'],
                 colModel: [
                     { key: false, hidden: true, name: 'id', index: 'id', editable: false, width: 0 },
-                    { key: false, hidden: false, name: 'ExCol1', index: 'ExCol1', editable: true, width: 0 },
-                    { key: false, hidden: false, name: 'ExCol2', index: 'ExCol2', editable: true, width: 0 },
+                    { key: false, hidden: false, name: 'ExCol1', index: 'ExCol1', editable: true, width: (pageWidth * (10 / 100)) },
+                    { key: false, hidden: false, name: 'ExCol2', index: 'ExCol2', editable: true, width: (pageWidth * (10 / 100)) },
                     { key: false, search: false, name: 'ExCol3', index: 'ExCol3', editable: true, width: (pageWidth * (10 / 100)) },
                     { key: false, search: false, name: 'ExCol4', index: 'ExCol4', editable: true, width: (pageWidth * (10 / 100)) },
                 ],
@@ -262,6 +263,7 @@
                 sortorder: "desc",
                 caption: "Xml Data Entry",
                 height: "100%",
+                width: "100%",
                 editurl: "clientArray",
                 autowidth: true,
                 shrinkToFit: true,
@@ -286,7 +288,7 @@
                 }
             })/*.jqGrid("filterToolbar", { defaultSearch: "cn" })*/;
             $(window).bind("resize", function () {
-                $("#jqGrid").jqGrid("setGridWidth", $("#jqGrid").closest("#grid").width());
+                $("#list").jqGrid("setGridWidth", $("#list").closest("#grid").width());
             }).triggerHandler("resize");
             $("#submitData").click(function () {
                 var allJQGridData = $('#list').jqGrid('getGridParam', 'data');
@@ -323,6 +325,7 @@
                         <li><a href="/Home/Index" style="color:white">Home</a></li>
                         <li><a href="/PdfBuilder/Index" style="color:white">PdfBuilder</a></li>
                         <li><a href="/XmlGenerator/Index" style="color:white">XmlGeneration</a></li>
+                        <li><a href="/SgmlConverter/Index" style="color:white">SgmlConversion</a></li>
                         <li style="float:right"><a href="/Home/Logout" style="color:white">Logout</a></li>
                     </ul>
                 </div>

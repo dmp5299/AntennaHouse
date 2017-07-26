@@ -73,3 +73,4 @@ C:\Users\dpothier\Documents\AntennaHousePdf-Dev\AntennaHousePdf\bin\System.Web.W
 C:\Users\dpothier\Documents\AntennaHousePdf-Dev\AntennaHousePdf\bin\System.Web.Webpages.Razor.xml
 C:\Users\dpothier\Documents\AntennaHousePdf-Dev\AntennaHousePdf\bin\System.Web.Helpers.xml
 C:\Users\dpothier\Documents\AntennaHousePdf-Dev\AntennaHousePdf\bin\System.Web.Mvc.xml
+C:\Users\dpothier\Documents\AntennaHousePdf-Dev\AntennaHousePdf\bin\SgmlReaderDll.dll

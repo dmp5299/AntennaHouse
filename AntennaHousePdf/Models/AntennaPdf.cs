@@ -25,6 +25,7 @@ namespace AntennaHousePdf.Models
     public class AntennaPdf
     {    
         public string Footer { get; set;}
+        public string UtasTitle { get; set; }
         public string Project { get; set; }
         public string SubProject { get; set; }
         public string SubProjectSB { get; set; }
@@ -58,7 +59,10 @@ namespace AntennaHousePdf.Models
             for (int i = 0; i < projects.Length; i++)
             {
                 projects[i] = new DirectoryInfo(projects[i]).Name;
-                items.Add(new SelectListItem { Text = projects[i], Value = projects[i] });
+                if (projects[i] != ".git")
+                {
+                    items.Add(new SelectListItem { Text = projects[i], Value = projects[i], Selected = selected });
+                }
                 selected = false;
             }
             return items;
@@ -111,6 +115,24 @@ namespace AntennaHousePdf.Models
                 Text = "None",
                 Value = "This document does not contain any export controlled technical data"
                + "\nUTC AEROSPACE SYSTEMS PROPRIETARY - Subject to the restriction on the title or cover page.",
+                Selected = false
+            });
+            return items;
+        }
+
+        public static List<SelectListItem> getTitles()
+        {
+            List<SelectListItem> items = new List<SelectListItem>();
+            items.Add(new SelectListItem
+            {
+                Text = "FAA ACCEPTED",
+                Value = "true",
+                Selected = true
+            });
+            items.Add(new SelectListItem
+            {
+                Text = "Not FAA ACCEPTED",
+                Value = "false",
                 Selected = false
             });
             return items;

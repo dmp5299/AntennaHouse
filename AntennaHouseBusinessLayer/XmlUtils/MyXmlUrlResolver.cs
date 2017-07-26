@@ -17,7 +17,7 @@ namespace AntennaHouseBusinessLayer.XmlUtils
 
         public override object GetEntity(Uri absoluteUri, string role, Type ofObjectToReturn)
         {
-            if (absoluteUri.Scheme == "http" || absoluteUri.AbsolutePath == @"/dtds/XMLISOENT/ISOEntities")
+            if (absoluteUri.Scheme == "http" || absoluteUri.AbsolutePath == @"/dtds/XMLISOENT/ISOEntities" || absoluteUri.AbsolutePath.Contains(@"ent/ISOEntities"))
             {
                 Assembly assembly = Assembly.GetExecutingAssembly();
                 Stream stream = assembly.GetManifestResourceStream(ConfigurationManager.AppSettings["entityFile"]);

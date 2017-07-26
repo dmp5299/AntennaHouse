@@ -45,7 +45,13 @@
                         new { @style = "width:100%;", @class = "form-control" })
                 </div>
 
-                //upload xml files
+                <div class="form-group" id="TitlePage" style="display:none">
+                    <label style="text-align:left;width:70%;">Title Page</label>
+                    @Html.DropDownListFor(model => model.UtasTitle, AntennaHousePdf.Models.AntennaPdf.getTitles(),
+                        new { @style = "width:100%;", @class = "form-control" })
+                </div>
+
+                    //upload xml files
                 <div class="form-group">
                     <label style="text-align:left;width:70%">Upload Files</label>
                     @Html.TextBoxFor(m => m.XmlFiles, new
@@ -85,6 +91,9 @@
                 if (project.options[project.selectedIndex].value == "SB") {
                     document.getElementById("Footer").style.display = "block";
                 }
+                else if(project.options[project.selectedIndex].value == "CMM"){
+                    document.getElementById("TitlePage").style.display = "block";
+                }
                 setSubDropdown($('#baseProject').val());
                 document.getElementById("subprojectblock").style.display = "block";
             }
@@ -104,24 +113,31 @@
     function change_project(project) {
         if (project.options[project.selectedIndex].value == "CMM") {
             document.getElementById("Footer").style.display = 'none';
+            document.getElementById("TitlePage").style.display = "block";
         }
         else if (project.options[project.selectedIndex].value == "4.1") {
             document.getElementById("Footer").style.display = 'none';
+            document.getElementById("TitlePage").style.display = "none";
         }
         else if (project.options[project.selectedIndex].value == "PWC") {
             document.getElementById("Footer").style.display = 'none';
+            document.getElementById("TitlePage").style.display = "none";
         }
         else if (project.options[project.selectedIndex].value == "53K") {
             document.getElementById("Footer").style.display = 'none';
+            document.getElementById("TitlePage").style.display = "none";
         }
         else if (project.options[project.selectedIndex].value == "Rolls Royce") {
             document.getElementById("Footer").style.display = 'none';
+            document.getElementById("TitlePage").style.display = "none";
         }
         else if (project.options[project.selectedIndex].value == "SB") {
             document.getElementById("Footer").style.display = 'block';
+            document.getElementById("TitlePage").style.display = "none";
         }
         else if (project.options[project.selectedIndex].value == "AcroLinx") {
             document.getElementById("Footer").style.display = 'none';
+            document.getElementById("TitlePage").style.display = "none";
         }
     }
 </script>

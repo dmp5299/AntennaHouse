@@ -101,6 +101,7 @@
     <Compile Include="Factories\XmlPopulatorFactory.cs" />
     <Compile Include="FiftyThreeK\FiftyThreeKOps.cs" />
     <Compile Include="FileUtils\FileOperations.cs" />
+    <Compile Include="FileUtils\UploadSgmlFiles.cs" />
     <Compile Include="Interfaces\IBuildDm.cs" />
     <Compile Include="Interfaces\IBuildPdf.cs" />
     <Compile Include="Interfaces\IRefDm.cs" />
@@ -121,6 +122,8 @@
     <Compile Include="Projects\Rolls-Royce\RollysRoyce.cs" />
     <Compile Include="Projects\SB\UTC.cs" />
     <Compile Include="SaxonExtensions\ATAExt.cs" />
+    <Compile Include="SaxonExtensions\UtasTitlePage.cs" />
+    <Compile Include="XmlObjects\ConvertedXmlFile.cs" />
     <Compile Include="XmlObjects\RefDm.cs" />
     <Compile Include="XmlObjects\RefDm53K.cs" />
     <Compile Include="XmlUtils\MergePm.cs" />
