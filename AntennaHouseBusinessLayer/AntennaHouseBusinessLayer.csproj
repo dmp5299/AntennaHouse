@@ -126,6 +126,7 @@
     <Compile Include="XmlObjects\ConvertedXmlFile.cs" />
     <Compile Include="XmlObjects\RefDm.cs" />
     <Compile Include="XmlObjects\RefDm53K.cs" />
+    <Compile Include="XmlUtils\Brex.cs" />
     <Compile Include="XmlUtils\MergePm.cs" />
     <Compile Include="XmlUtils\MyXmlUrlResolver.cs" />
     <Compile Include="DataModuleCreation\NumIndexDm.cs" />

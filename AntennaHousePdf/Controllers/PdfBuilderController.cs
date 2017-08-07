@@ -6,6 +6,7 @@ using System.Web.Mvc;
 using AntennaHousePdf.Models;
 using System.IO;
 using XfoDotNetCtl;
+using AntennaHouseBusinessLayer.XmlUtils;
 using System.Windows.Forms;
 using System.Reflection;
 using System.Configuration;
@@ -23,7 +24,6 @@ using System.Text;
 using AntennaHouseBusinessLayer.FOUtils;
 using AntennaHousePdf.FileUtils;
 using AntennaHouseBusinessLayer.FileUtils;
-using AntennaHouseBusinessLayer.XmlUtils;
 using AntennaHouseBusinessLayer.Mail;
 using AntennaHouseBusinessLayer.Projects.CMM;
 using AntennaHouseBusinessLayer.Projects.PointOne;
@@ -80,7 +80,16 @@ namespace AntennaHousePdf.Controllers
                         switch (pdfParams.Project)
                         {
                             case "CMM":
-                                file = Utas.buildPdf(XmlOperations.FindPmFile(pdfParams.XmlFiles), pdfParams.Project, pdfParams.UtasTitle, pdfParams.SubProject);
+                                StringBuilder sb = Brex.CheckBrex(Directory.GetFiles(System.Web.HttpContext.Current.Session["UserId"].ToString()));
+                                if(sb.Length > 0)
+                                {
+                                    return File(Encoding.UTF8.GetBytes(sb.ToString()),
+                                    "text/plain", "brexErrors.txt");
+                                }
+                                else
+                                {
+                                    file = Utas.buildPdf(XmlOperations.FindPmFile(pdfParams.XmlFiles), pdfParams.Project, pdfParams.UtasTitle, pdfParams.SubProject);
+                                }
                                 break;
                             case "4.1":
                                 file = Pratt.buildPdf(XmlOperations.FindPmFile(pdfParams.XmlFiles), pdfParams.Project, pdfParams.SubProject);
@@ -134,17 +143,13 @@ namespace AntennaHousePdf.Controllers
                             case "Rolls Royce":
                                 file = RollysRoyce.buildPdf(XmlOperations.FindPmFile(pdfParams.XmlFiles), pdfParams.Project, pdfParams.SubProject);
                                 break;
-                            case "AcroLinx":
-                                string[] xmlfiles = Directory.GetFiles(System.Web.HttpContext.Current.Session["UserId"].ToString() + "/");
-                                file = AcroLinx.buildPdf(xmlfiles, pdfParams.Project, pdfParams.SubProject);
-                                break;
 
                         }
                         Response.AddHeader("Content-Disposition", new System.Net.Mime.ContentDisposition("attachment")
                         { FileName = file.FileName.Replace(".XML", ".pdf") }.ToString());
                         Response.ContentType = "application/pdf";
                         return file.PdfDoc;
-                    }
+                    }/*
                     catch (ArgumentNullException e)
                     {
                         Mail mail = new Mail();
@@ -155,7 +160,7 @@ namespace AntennaHousePdf.Controllers
                             ReasonPhrase = ("Illigal argument")
                         };
                         throw new HttpResponseException(resp);
-                    }
+                    }*/
                     catch (NullReferenceException e)
                     {
                         Mail mail = new Mail();
@@ -211,7 +216,7 @@ namespace AntennaHousePdf.Controllers
                             ReasonPhrase = "Invalid Operation"
                         };
                         throw new HttpResponseException(resp);
-                    }
+                    }/*
                     catch (ArgumentException e)
                     {
                         Mail mail = new Mail();
@@ -222,7 +227,7 @@ namespace AntennaHousePdf.Controllers
                             ReasonPhrase = "Illigal Arguement Exception"
                         };
                         throw new HttpResponseException(resp);
-                    }
+                    }*/
                     catch (XmlException e)
                     {
                         Mail mail = new Mail();
@@ -233,7 +238,7 @@ namespace AntennaHousePdf.Controllers
                             ReasonPhrase = "Xml Exception"
                         };
                         throw new HttpResponseException(resp);
-                    }
+                    }/*
                     catch (Exception e)
                     {
                         Mail mail = new Mail();
@@ -245,7 +250,7 @@ namespace AntennaHousePdf.Controllers
                             ReasonPhrase = "Exception"
                         };
                         throw new HttpResponseException(resp);
-                    }
+                    }*/
                 }
                 catch (HttpResponseException e)
                 {
