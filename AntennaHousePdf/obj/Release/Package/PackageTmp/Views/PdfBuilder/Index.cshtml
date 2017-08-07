@@ -1,0 +1,148 @@
+﻿@using System.Windows;
+@using System.Web.UI.WebControls;
+@model AntennaHousePdf.Models.AntennaPdf
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html>
+            @Html.Partial("_Header")
+            <div style="width:30%;margin: 0 auto;background-color:white;">
+
+                @using (Html.BeginForm("Index", "PdfBuilder", FormMethod.Post, new { enctype = "multipart/form-data", onsubmit = "return checkFiles()" }
+            ))
+                {
+                    @Html.ValidationSummary()
+                    var styleSheets = AntennaHousePdf.Models.AntennaPdf.getProjects();
+                    //project dropdown
+                    <div class="form-group">
+                        <label style="text-align:left;width:70%;padding-top:.2in;display:block">Project</label>
+                        @Html.DropDownListFor(model => model.Project, styleSheets, new
+                        {
+                            @onchange= "change_project(this)",
+                            @style = "width:100%;",
+                            id = "baseProject",
+                            @class = "form-control"
+                        })
+                    </div>
+                    <div class="form-group" style="display:none" id="subprojectblock">
+                        <label style="text-align:left;width:70%;display:block">SubProject</label><!--
+                        <select id="subproject" class="form-control" name="subproject" style="width:100%"></select>-->
+                        @Html.DropDownListFor(model => model.SubProject, Enumerable.Empty<SelectListItem>(), 
+                        new
+                        {
+                            @style = "width:100%;",
+                            id = "subproject",
+                            @class = "form-control"
+                        })
+                    </div>
+                    //footers
+                <div class="form-group" id="Footer" style="display:none">
+                    <label style="text-align:left;width:70%;">Footer</label>
+                    @Html.DropDownListFor(model => model.Footer, AntennaHousePdf.Models.AntennaPdf.getFooters(),
+                        new { @style = "width:100%;", @class = "form-control" })
+                </div>
+
+                <div class="form-group" id="TitlePage" style="display:none">
+                    <label style="text-align:left;width:70%;">Title Page</label>
+                    @Html.DropDownListFor(model => model.UtasTitle, AntennaHousePdf.Models.AntennaPdf.getTitles(),
+                        new { @style = "width:100%;", @class = "form-control" })
+                </div>
+
+                    //upload xml files
+                <div class="form-group">
+                    <label style="text-align:left;width:70%">Upload Files</label>
+                    @Html.TextBoxFor(m => m.XmlFiles, new
+                   {
+                       type = "file",
+                       name = "file",
+                       style = "width:100%;padding-after:.1in",
+                       id = "sbXml",
+                       accept = ".xml",
+                       multiple = "multiple"
+                   })
+                </div>
+                //upload graphics for pdf
+                <div class="form-group">
+                    <label style="text-align:left;width:70%">Upload Graphics</label>
+                    @Html.TextBoxFor(m => m.Graphics, new
+                   {
+                       type = "file",
+                       name = "file",
+                       style = "width:100%",
+                       accept = ".cgm, .jpg, .tif, .png",
+                       multiple = "multiple"
+                   })
+                </div>
+                <div class="text-center" style="padding-bottom:.2in">
+                    <input class="btn btn-primary" type="submit" value="Build PDF" id="buildPdfButton" />
+                </div>
+                <div id="progressbar"></div>
+                }
+
+            </div>
+       <script>
+        window.onload = function (e) {
+            project = document.getElementById("baseProject");
+            if (project.options[project.selectedIndex].value != "Select Project")
+            {
+                if (project.options[project.selectedIndex].value == "SB") {
+                    document.getElementById("Footer").style.display = "block";
+                }
+                else if(project.options[project.selectedIndex].value == "CMM"){
+                    document.getElementById("TitlePage").style.display = "block";
+                }
+                setSubDropdown($('#baseProject').val());
+                document.getElementById("subprojectblock").style.display = "block";
+            }
+            else {
+                $('#buildPdfButton').addClass('disabled');
+            }
+        }
+
+    function checkFiles() {
+        var filePath = document.getElementById('sbXml').value;
+        if (filePath.length < 1) {
+            alert("Select one or more xml files");
+            return false;
+        }
+    }
+
+    function change_project(project) {
+        if (project.options[project.selectedIndex].value == "CMM") {
+            document.getElementById("Footer").style.display = 'none';
+            document.getElementById("TitlePage").style.display = "block";
+        }
+        else if (project.options[project.selectedIndex].value == "4.1") {
+            document.getElementById("Footer").style.display = 'none';
+            document.getElementById("TitlePage").style.display = "none";
+        }
+        else if (project.options[project.selectedIndex].value == "PWC") {
+            document.getElementById("Footer").style.display = 'none';
+            document.getElementById("TitlePage").style.display = "none";
+        }
+        else if (project.options[project.selectedIndex].value == "53K") {
+            document.getElementById("Footer").style.display = 'none';
+            document.getElementById("TitlePage").style.display = "none";
+        }
+        else if (project.options[project.selectedIndex].value == "Rolls Royce") {
+            document.getElementById("Footer").style.display = 'none';
+            document.getElementById("TitlePage").style.display = "none";
+        }
+        else if (project.options[project.selectedIndex].value == "SB") {
+            document.getElementById("Footer").style.display = 'block';
+            document.getElementById("TitlePage").style.display = "none";
+        }
+        else if (project.options[project.selectedIndex].value == "AcroLinx") {
+            document.getElementById("Footer").style.display = 'none';
+            document.getElementById("TitlePage").style.display = "none";
+        }
+    }
+</script>
+        </div>
+    </div>
+</body>
+</html>
+

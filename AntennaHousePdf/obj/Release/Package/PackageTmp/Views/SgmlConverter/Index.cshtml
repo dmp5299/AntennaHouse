@@ -1,0 +1,47 @@
+﻿
+@using System.Windows;
+@using System.Web.UI.WebControls;
+@model AntennaHousePdf.Models.SgmlFile
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html>
+@Html.Partial("_Header")
+<div style="width:30%;margin: 0 auto;background-color:white;" class="well">
+    @using (Html.BeginForm("Index", "SgmlConverter", FormMethod.Post, new { enctype = "multipart/form-data", onsubmit = "return checkFiles()" }
+                                ))
+    {
+        @Html.ValidationSummary()
+        <div class="form-group">
+            <label style="text-align:left;width:70%">Upload Sgml</label>
+            @Html.TextBoxFor(m => m.SgmlFiles, new
+{
+    type = "file",
+    name = "file",
+    style = "width:100%",
+    accept = ".sgm",
+    id = "sgmlFiles",
+    multiple = "multiple"
+})
+        </div>
+        <div class="text-center" style="padding-bottom:.2in">
+            <input class="btn btn-primary" type="submit" value="Build PDF" id="buildPdfButton" />
+        </div>
+    }
+</div>
+</div>
+<script>
+    function checkFiles() {
+        var filePath = document.getElementById('sgmlFiles').value;
+        if (filePath.length < 1) {
+            alert("Select one or more sgml files");
+            return false;
+        }
+    }
+</script>
+    </div>
+</body>
+</html>

@@ -1,0 +1,167 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="14.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{4DFB6457-164F-4B26-91B9-A29710303B1D}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>AntennaHouseBusinessLayer</RootNamespace>
+    <AssemblyName>AntennaHouseBusinessLayer</AssemblyName>
+    <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="IKVM.OpenJDK.Security">
+      <HintPath>..\..\..\..\..\inetpub\wwwroot\Saxonica\SaxonPE9.7N\bin\IKVM.OpenJDK.Security.dll</HintPath>
+    </Reference>
+    <Reference Include="IKVM.OpenJDK.Util">
+      <HintPath>..\..\..\..\..\inetpub\wwwroot\Saxonica\SaxonPE9.7N\bin\IKVM.OpenJDK.Util.dll</HintPath>
+    </Reference>
+    <Reference Include="IKVM.Runtime">
+      <HintPath>..\..\..\..\..\inetpub\wwwroot\Saxonica\SaxonPE9.7N\bin\IKVM.Runtime.dll</HintPath>
+    </Reference>
+    <Reference Include="Ionic.BZip2">
+      <HintPath>..\..\..\Downloads\Ionic.BZip2.dll</HintPath>
+    </Reference>
+    <Reference Include="Ionic.Zip">
+      <HintPath>..\..\..\Downloads\Ionic.Zip.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Web.Infrastructure, Version=1.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.Web.Infrastructure.1.0.0.0\lib\net40\Microsoft.Web.Infrastructure.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="saxon9pe-api">
+      <HintPath>..\..\..\..\..\inetpub\wwwroot\Saxonica\SaxonPE9.7N\bin\saxon9pe-api.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.configuration" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Net" />
+    <Reference Include="System.Web" />
+    <Reference Include="System.Web.Helpers, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.AspNet.WebPages.3.2.3\lib\net45\System.Web.Helpers.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System.Web.Http">
+      <HintPath>..\AntennaHousePdf\bin\System.Web.Http.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.Mvc, Version=5.2.3.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.AspNet.Mvc.5.2.3\lib\net45\System.Web.Mvc.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System.Web.Razor, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.AspNet.Razor.3.2.3\lib\net45\System.Web.Razor.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System.Web.WebPages, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.AspNet.WebPages.3.2.3\lib\net45\System.Web.WebPages.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System.Web.WebPages.Deployment, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.AspNet.WebPages.3.2.3\lib\net45\System.Web.WebPages.Deployment.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System.Web.WebPages.Razor, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.AspNet.WebPages.3.2.3\lib\net45\System.Web.WebPages.Razor.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System.Windows.Forms" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Net.Http" />
+    <Reference Include="System.Xml" />
+    <Reference Include="XfoDotNet40Ctl63">
+      <HintPath>..\..\..\..\..\AntennaHouse\XfoDotNet40Ctl63.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Factories\BuildDmBuilder.cs" />
+    <Compile Include="Factories\FileUploadFactory.cs" />
+    <Compile Include="Factories\XmlPopulatorFactory.cs" />
+    <Compile Include="FiftyThreeK\FiftyThreeKOps.cs" />
+    <Compile Include="FileUtils\FileOperations.cs" />
+    <Compile Include="FileUtils\UploadSgmlFiles.cs" />
+    <Compile Include="Interfaces\IBuildDm.cs" />
+    <Compile Include="Interfaces\IBuildPdf.cs" />
+    <Compile Include="Interfaces\IRefDm.cs" />
+    <Compile Include="Interfaces\IUploadFiles.cs" />
+    <Compile Include="Interfaces\IXmlPopulator.cs" />
+    <Compile Include="Interfaces\IToolsAndWarnings.cs" />
+    <Compile Include="FileUtils\ChangeFileName.cs" />
+    <Compile Include="FOUtils\CreateDocument.cs" />
+    <Compile Include="DataModuleCreation\EquipDesignatorDm.cs" />
+    <Compile Include="FOUtils\Foldouts.cs" />
+    <Compile Include="Mail\Mail.cs" />
+    <Compile Include="DataModuleCreation\NumIndexDm4Point1.cs" />
+    <Compile Include="Projects\4PointOne\Pratt.cs" />
+    <Compile Include="Projects\Acrolinx\AcroLinx.cs" />
+    <Compile Include="Projects\FiftyThreeK\FiftyThreeK.cs" />
+    <Compile Include="Projects\CMM\Utas.cs" />
+    <Compile Include="Projects\PWC\PwcSb.cs" />
+    <Compile Include="Projects\Rolls-Royce\RollysRoyce.cs" />
+    <Compile Include="Projects\SB\UTC.cs" />
+    <Compile Include="SaxonExtensions\ATAExt.cs" />
+    <Compile Include="SaxonExtensions\UtasTitlePage.cs" />
+    <Compile Include="XmlObjects\ConvertedXmlFile.cs" />
+    <Compile Include="XmlObjects\RefDm.cs" />
+    <Compile Include="XmlObjects\RefDm53K.cs" />
+    <Compile Include="XmlUtils\MergePm.cs" />
+    <Compile Include="XmlUtils\MyXmlUrlResolver.cs" />
+    <Compile Include="DataModuleCreation\NumIndexDm.cs" />
+    <Compile Include="FOUtils\PdfFile.cs" />
+    <Compile Include="XmlUtils\PmDate.cs" />
+    <Compile Include="XmlUtils\References.cs" />
+    <Compile Include="FileUtils\ReplacementOperations.cs" />
+    <Compile Include="FiftyThreeK\SuppliesPopulator.cs" />
+    <Compile Include="FiftyThreeK\SupportEquipmentPopulator.cs" />
+    <Compile Include="FileUtils\UploadGraphicFiles.cs" />
+    <Compile Include="FileUtils\UploadXmlFiles.cs" />
+    <Compile Include="FiftyThreeK\WarningPopulator.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="SaxonExtensions\FileChek.cs" />
+    <Compile Include="SaxonExtensions\getGraphicPath.cs" />
+    <Compile Include="SaxonExtensions\GetReferences.cs" />
+    <Compile Include="SaxonExtensions\SbFooter.cs" />
+    <Compile Include="SaxonExtensions\SubProject.cs" />
+    <Compile Include="Tools\Supplies.cs" />
+    <Compile Include="Tools\SupportEquipmentAndSupplies.cs" />
+    <Compile Include="Tools\Warning.cs" />
+    <Compile Include="CustomExceptions\ZippedPdfException.cs" />
+    <Compile Include="XmlUtils\XmlOperations.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="app.config" />
+    <EmbeddedResource Include="Entities\entities.ent" />
+    <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup />
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>
