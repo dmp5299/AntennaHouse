@@ -19,10 +19,6 @@ namespace AntennaHousePdf.Models
 
         public static ConvertedXmlFile convertToXml(string xml)
         {
-<<<<<<< HEAD
-            string dave;
-=======
->>>>>>> 67febedfce058cb82215ab8201a067c9ddee815c
             TextReader reader = new StreamReader(xml);
             Sgml.SgmlReader sgmlReader = new Sgml.SgmlReader();
             sgmlReader.DocType = "hs-cmm";

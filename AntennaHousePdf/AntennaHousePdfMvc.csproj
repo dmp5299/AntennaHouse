@@ -131,6 +131,10 @@
     <Reference Include="saxon9pe-api">
       <HintPath>..\..\..\..\..\..\..\inetpub\wwwroot\Saxonica\SaxonPE9.7N\bin\saxon9pe-api.dll</HintPath>
     </Reference>
+    <Reference Include="SgmlReaderDll, Version=1.8.12.0, Culture=neutral, PublicKeyToken=46b2db9ca481831b, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\..\..\..\SGMLReader\sgmlreaderdll\bin\Release\SgmlReaderDll.dll</HintPath>
+    </Reference>
     <Reference Include="System.IO.Compression.FileSystem" />
     <Reference Include="System.Net" />
     <Reference Include="System.Net.Http" />
@@ -561,10 +565,6 @@
     <WCFMetadata Include="Service References\" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\..\..\..\SGMLReader\sgmlreaderdll\SgmlReaderDll.csproj">
-      <Project>{499527ff-ae52-450f-b3e3-4ad53e1712ad}</Project>
-      <Name>SgmlReaderDll</Name>
-    </ProjectReference>
     <ProjectReference Include="..\AntennaHouseBusinessLayer\AntennaHouseBusinessLayer.csproj">
       <Project>{4dfb6457-164f-4b26-91b9-a29710303b1d}</Project>
       <Name>AntennaHouseBusinessLayer</Name>
