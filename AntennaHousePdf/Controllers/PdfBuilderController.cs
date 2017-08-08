@@ -81,7 +81,7 @@ namespace AntennaHousePdf.Controllers
                         {
                             case "CMM":
                                 StringBuilder sb = Brex.CheckBrex(Directory.GetFiles(System.Web.HttpContext.Current.Session["UserId"].ToString()));
-                                if(sb.Length > 0)
+                                if (sb.Length > 0)
                                 {
                                     return File(Encoding.UTF8.GetBytes(sb.ToString()),
                                     "text/plain", "brexErrors.txt");
@@ -149,7 +149,7 @@ namespace AntennaHousePdf.Controllers
                         { FileName = file.FileName.Replace(".XML", ".pdf") }.ToString());
                         Response.ContentType = "application/pdf";
                         return file.PdfDoc;
-                    }/*
+                    }
                     catch (ArgumentNullException e)
                     {
                         Mail mail = new Mail();
@@ -160,7 +160,7 @@ namespace AntennaHousePdf.Controllers
                             ReasonPhrase = ("Illigal argument")
                         };
                         throw new HttpResponseException(resp);
-                    }*/
+                    }
                     catch (NullReferenceException e)
                     {
                         Mail mail = new Mail();
@@ -216,7 +216,7 @@ namespace AntennaHousePdf.Controllers
                             ReasonPhrase = "Invalid Operation"
                         };
                         throw new HttpResponseException(resp);
-                    }/*
+                    }
                     catch (ArgumentException e)
                     {
                         Mail mail = new Mail();
@@ -227,7 +227,7 @@ namespace AntennaHousePdf.Controllers
                             ReasonPhrase = "Illigal Arguement Exception"
                         };
                         throw new HttpResponseException(resp);
-                    }*/
+                    }
                     catch (XmlException e)
                     {
                         Mail mail = new Mail();
@@ -238,7 +238,7 @@ namespace AntennaHousePdf.Controllers
                             ReasonPhrase = "Xml Exception"
                         };
                         throw new HttpResponseException(resp);
-                    }/*
+                    }
                     catch (Exception e)
                     {
                         Mail mail = new Mail();
@@ -250,7 +250,7 @@ namespace AntennaHousePdf.Controllers
                             ReasonPhrase = "Exception"
                         };
                         throw new HttpResponseException(resp);
-                    }*/
+                    }
                 }
                 catch (HttpResponseException e)
                 {

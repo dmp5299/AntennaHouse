@@ -22,7 +22,7 @@ namespace AntennaHouseBusinessLayer.XmlUtils
             foreach (string xmlFile in xmlFiles)
                 {
                     XmlDocument dataModule = LoadXml(xmlFile);
-                XmlDocument brexModule = LoadXml(System.Configuration.ConfigurationManager.AppSettings["Brex"]);
+                    XmlDocument brexModule = LoadXml(System.Configuration.ConfigurationManager.AppSettings["Brex"]);
                     List<string> erros = new List<string>();
                     foreach (XmlNode rule in brexModule.SelectNodes("descendant::structureObjectRule"))
                     {
@@ -52,8 +52,8 @@ namespace AntennaHouseBusinessLayer.XmlUtils
                                     //get attribute value
                                     string att = node.Attributes[attribute].InnerText;
                                     bool valid = false;
-                                //loop through allowed attribute values in brex and see if you can get a match
-                                foreach (XmlNode objectValue in rule.SelectNodes("child::objectValue"))
+                                    //loop through allowed attribute values in brex and see if you can get a match
+                                    foreach (XmlNode objectValue in rule.SelectNodes("child::objectValue"))
                                     {
                                         if (objectValue.Attributes["valueForm"].InnerText == "single")
                                         {
@@ -84,10 +84,10 @@ namespace AntennaHouseBusinessLayer.XmlUtils
                                             }
                                     }
                                 }
-                                    if (!valid)
-                                    {
-                                        SB.AppendLine(attribute + " has an invalid attribute value in " + xmlFile);
-                                    }
+                                if (!valid)
+                                {
+                                    SB.AppendLine(attribute + " has an invalid attribute value in " + xmlFile);
+                                }
                                 }
                             }
                         }
