@@ -32,13 +32,27 @@ using AntennaHouseBusinessLayer.Projects.PWC;
 using AntennaHouseBusinessLayer.Projects.SB;
 using AntennaHouseBusinessLayer.Projects.Acrolinx;
 using AntennaHouseBusinessLayer.Projects.Rolls_Royce;
+using AntennaHouseBusinessLayer.Projects.Comac;
 
 namespace AntennaHousePdf.Controllers
 {
-    public class PdfBuilderController : Controller
+    public class PdfToolsController : Controller
     {
         [System.Web.Mvc.HttpGet]
-        public ActionResult Index()
+        public ActionResult PdfBuilder()
+        {
+            if (Session["id"] != null)
+            {
+                return View();
+            }
+            else
+            {
+                return RedirectToAction("Login", "Home", new { area = "" });
+            }
+        }
+
+        [System.Web.Mvc.HttpGet]
+        public ActionResult CommentExport()
         {
             if (Session["id"] != null)
             {
@@ -57,7 +71,52 @@ namespace AntennaHousePdf.Controllers
         }
 
         [System.Web.Mvc.HttpPost]
-        public ActionResult Index(AntennaPdf pdfParams)
+        public ActionResult CommentExport(CommentedPdf pdfDoc)
+        {
+            if (Session["id"] != null)
+            {
+                try
+                {
+                    UploadPdfFiles uploadSgmlFiles = new UploadPdfFiles();
+                    uploadSgmlFiles.uploadFiles(pdfDoc.Pdf, "pdfPath", false);
+                    string[] arr = pdfDoc.Pdf[0].FileName.Split('\\');
+                    string pdfFile = arr[arr.Length - 1];
+                    return File(pdfDoc.buildCommentFile(Session["pdfPath"] + "/" + pdfFile),
+                                        "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", "daveRules.xlsx");
+                }
+                catch (ArgumentException e)
+                {
+                    Mail mail = new Mail();
+                    string error = "Error exporting comments from " + Session["FirstName"].ToString() + " " + Session["LastName"].ToString() + "<br/><br/>" + "Illigal argument: " + e.Message;
+                    var resp = new HttpResponseMessage(HttpStatusCode.NotFound)
+                    {
+                        Content = new StringContent(e.Message),
+                        ReasonPhrase = ("Illigal argument")
+                    };
+                    ModelState.AddModelError("", resp.ReasonPhrase.ToString() + ": " + resp.Content.ReadAsStringAsync().Result);
+                    return View(pdfDoc);
+                }
+                catch (Exception e)
+                {
+                    Mail mail = new Mail();
+                    string error = "Error exporting comments from " + Session["FirstName"].ToString() + " " + Session["LastName"].ToString() + "<br/><br/>" + "Exception: " + e.Message;
+                    var resp = new HttpResponseMessage(HttpStatusCode.NotFound)
+                    {
+                        Content = new StringContent(e.Message),
+                        ReasonPhrase = ("Exception")
+                    };
+                    ModelState.AddModelError("", resp.ReasonPhrase.ToString() + ": " + resp.Content.ReadAsStringAsync().Result);
+                    return View(pdfDoc);
+                }
+            }
+            else
+            {
+                return RedirectToAction("Login", "Home", new { area = "" });
+            }
+        }
+
+        [System.Web.Mvc.HttpPost]
+        public ActionResult Pdfbuilder(AntennaPdf pdfParams)
         {
             if (Session["id"] != null)
             {
@@ -88,7 +147,7 @@ namespace AntennaHousePdf.Controllers
                                 }
                                 else
                                 {
-                                    file = Utas.buildPdf(XmlOperations.FindPmFile(pdfParams.XmlFiles), pdfParams.Project, pdfParams.UtasTitle, pdfParams.SubProject);
+                                    file = Utas.buildPdf(XmlOperations.FindPmFile(pdfParams.XmlFiles), pdfParams.Project, pdfParams.UtasTitle, pdfParams.FooterDate, pdfParams.SubProject);
                                 }
                                 break;
                             case "4.1":
@@ -111,10 +170,34 @@ namespace AntennaHousePdf.Controllers
                                 }
                                 break;
                             case "PWC":
+                                StringBuilder sbBrex = PwcBrex.CheckBrex(Directory.GetFiles(System.Web.HttpContext.Current.Session["UserId"].ToString()));
+                                if (sbBrex.Length > 0)
+                                {
+                                    return File(Encoding.UTF8.GetBytes(sbBrex.ToString()),
+                                    "text/plain", "brexErrors.txt");
+                                }
+                                else
+                                {
+                                    if (pdfParams.XmlFiles.Count > 1)
+                                    {
+                                        string[] filesEntries = Directory.GetFiles(System.Web.HttpContext.Current.Session["UserId"].ToString());
+                                        var memStream = PwcSb.buildZipFile(filesEntries, pdfParams.Project, pdfParams.SubProject, pdfParams.Footer);
+                                        Response.AddHeader("Content-Disposition", "attachment; filename=Sbs.zip");
+                                        return File(memStream, "application/zip");
+                                    }
+                                    else
+                                    {
+                                        string[] arr = pdfParams.XmlFiles[0].FileName.Split('\\');
+                                        string xmlFile = arr[arr.Length - 1];
+                                        file = PwcSb.buildPdf(System.Web.HttpContext.Current.Session["UserId"].ToString() + "/" + xmlFile, pdfParams.Project, pdfParams.SubProject);
+                                    }
+                                }
+                                break;
+                            case "Comac":
                                 if (pdfParams.XmlFiles.Count > 1)
                                 {
                                     string[] filesEntries = Directory.GetFiles(System.Web.HttpContext.Current.Session["UserId"].ToString());
-                                    var memStream = PwcSb.buildZipFile(filesEntries, pdfParams.Project, pdfParams.SubProject, pdfParams.Footer);
+                                    var memStream = Comac.buildZipFile(filesEntries, pdfParams.Project, pdfParams.SubProject, pdfParams.Footer);
                                     Response.AddHeader("Content-Disposition", "attachment; filename=Sbs.zip");
                                     return File(memStream, "application/zip");
                                 }
@@ -122,14 +205,14 @@ namespace AntennaHousePdf.Controllers
                                 {
                                     string[] arr = pdfParams.XmlFiles[0].FileName.Split('\\');
                                     string xmlFile = arr[arr.Length - 1];
-                                    file = PwcSb.buildPdf(System.Web.HttpContext.Current.Session["UserId"].ToString() + "/" + xmlFile, pdfParams.Project, pdfParams.SubProject);
+                                    file = Comac.buildPdf(System.Web.HttpContext.Current.Session["UserId"].ToString() + "/" + xmlFile, pdfParams.Project, pdfParams.SubProject);
                                 }
                                 break;
                             case "53K":
                                 if (pdfParams.XmlFiles.Count > 1)
                                 {
                                     string[] filesEntries = Directory.GetFiles(System.Web.HttpContext.Current.Session["UserId"].ToString());
-                                    var memStream = FiftyThreeK.buildZipFile(filesEntries, pdfParams.Project, pdfParams.SubProject);
+                                    var memStream = Comac.buildZipFile(filesEntries, pdfParams.Project, pdfParams.SubProject);
                                     Response.AddHeader("Content-Disposition", "attachment; filename=Sbs.zip");
                                     return File(memStream, "application/zip");
                                 }
@@ -154,6 +237,7 @@ namespace AntennaHousePdf.Controllers
                     {
                         Mail mail = new Mail();
                         string error = "Error buliding pdf from " + Session["FirstName"].ToString() + " " + Session["LastName"].ToString() + "<br/><br/>" + "Illigal argument: " + e.Message;
+                        mail.sendMail(error);
                         var resp = new HttpResponseMessage(HttpStatusCode.NotFound)
                         {
                             Content = new StringContent(e.Message),
@@ -165,6 +249,7 @@ namespace AntennaHousePdf.Controllers
                     {
                         Mail mail = new Mail();
                         string error = "Error buliding pdf from " + Session["FirstName"].ToString() + " " + Session["LastName"].ToString() + "<br/><br/>" + "Null Reference: " + e.Message;
+                        mail.sendMail(error);
                         var resp = new HttpResponseMessage(HttpStatusCode.NotFound)
                         {
                             Content = new StringContent(e.Message),
@@ -188,6 +273,7 @@ namespace AntennaHousePdf.Controllers
                     {
                         Mail mail = new Mail();
                         string error = "Error buliding pdf from " + Session["FirstName"].ToString() + " " + Session["LastName"].ToString() + "<br/><br/>" + "XSL Transform Error: " + e.Message;
+                        mail.sendMail(error);
                         var resp = new HttpResponseMessage(HttpStatusCode.NotFound)
                         {
                             Content = new StringContent(e.Message),
@@ -199,6 +285,7 @@ namespace AntennaHousePdf.Controllers
                     {
                         Mail mail = new Mail();
                         string error = "Error buliding pdf from " + Session["FirstName"].ToString() + " " + Session["LastName"].ToString() + "<br/><br/>" + "IO Exception: " + e.Message;
+                        mail.sendMail(error);
                         var resp = new HttpResponseMessage(HttpStatusCode.NotFound)
                         {
                             Content = new StringContent(e.Message),
@@ -210,6 +297,7 @@ namespace AntennaHousePdf.Controllers
                     {
                         Mail mail = new Mail();
                         string error = "Error buliding pdf from " + Session["FirstName"].ToString() + " " + Session["LastName"].ToString() + "<br/><br/>" + "Invalid Operation: " + e.Message;
+                        mail.sendMail(error);
                         var resp = new HttpResponseMessage(HttpStatusCode.NotFound)
                         {
                             Content = new StringContent(e.Message),
@@ -221,6 +309,7 @@ namespace AntennaHousePdf.Controllers
                     {
                         Mail mail = new Mail();
                         string error = "Error buliding pdf from " + Session["FirstName"].ToString() + " " + Session["LastName"].ToString() + "<br/><br/>" + "Illigal Arguement Exception: " + e.Message;
+                        mail.sendMail(error);
                         var resp = new HttpResponseMessage(HttpStatusCode.NotFound)
                         {
                             Content = new StringContent(e.Message),
@@ -232,6 +321,7 @@ namespace AntennaHousePdf.Controllers
                     {
                         Mail mail = new Mail();
                         string error = "Error buliding pdf from " + Session["FirstName"].ToString() + " " + Session["LastName"].ToString() + "<br/><br/>" + "Xml Exception: " + e.Message;
+                         mail.sendMail(error);
                         var resp = new HttpResponseMessage(HttpStatusCode.NotFound)
                         {
                             Content = new StringContent(e.Message),

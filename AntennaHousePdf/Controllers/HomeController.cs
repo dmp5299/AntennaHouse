@@ -45,7 +45,7 @@ namespace AntennaHousePdf.Controllers
                         Session["UserName"] = obj.UserName.ToString();
                         Session["FirstName"] = obj.FirstName.ToString();
                         Session["LastName"] = obj.LastName.ToString();
-                        return RedirectToAction("Index", "PdfBuilder", new { area = "" });
+                        return RedirectToAction("PdfBuilder", "PdfTools", new { area = "" });
                     }
                     else
                     {

@@ -24,7 +24,7 @@
         function setSubDropdown(projectName) {
             $.ajax({
                 type: "POST",
-                url: "/PdfBuilder/FilleDropDown", data: { project: projectName }, success: function (result) {
+                url: "/PdfTools/FilleDropDown", data: { project: projectName }, success: function (result) {
                     $("#subproject").html(result);
                 },
                 error: function (XMLHttpRequest, textStatus, errorThrown) {
@@ -310,7 +310,7 @@
     </script>
     <script scr="~/Scripts/dropdownLogic.js"></script>
     <style>
-
+        .caret{border-top:4px solid red;}
     </style>
 </head>
 <body>
@@ -322,10 +322,20 @@
             <nav class="navbar navbar-default" style="background-color:blue">
                 <div class="container-fluid">
                     <ul class="nav navbar-nav" style="width:100%">
-                        <li><a href="/PdfBuilder/Index" style="color:white">PdfBuilder</a></li>
+                        <li class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#" style="color:white">
+                            PdfTools
+                            <span class="caret"></span>
+                        </a>
+                        <ul class="dropdown-menu">
+                            <li><a href="/PdfTools/PdfBuilder">PdfBuilder</a></li>
+                            <li><a href="/PdfTools/CommentExport">CommentExport</a></li>
+                        </ul>
+                        </li>
                         <li><a href="/XmlGenerator/Index" style="color:white">XmlGeneration</a></li>
-                        <li><a href="/SgmlConverter/Index" style="color:white">SgmlConversion</a></li>
+                        <li><a href="/SgmlConverter/Index" style="color:white">SgmlConversion</a></li><!--
+                        <li><a href="/Contenta/ContentaDelete" style="color:white">Contenta</a></li>-->
                         <li style="float:right"><a href="/Home/Logout" style="color:white">Logout</a></li>
                     </ul>
                 </div>
             </nav>
+             

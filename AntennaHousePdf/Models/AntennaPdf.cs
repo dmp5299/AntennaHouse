@@ -23,7 +23,8 @@ using System.Collections;
 namespace AntennaHousePdf.Models
 {
     public class AntennaPdf
-    {    
+    {
+        public Boolean FooterDate { get; set; } = false;
         public string Footer { get; set;}
         public string UtasTitle { get; set; }
         public string Project { get; set; }

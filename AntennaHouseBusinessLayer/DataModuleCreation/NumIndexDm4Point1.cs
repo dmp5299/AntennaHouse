@@ -33,7 +33,6 @@ namespace AntennaHouseBusinessLayer.DataModuleCreation
         public void buildDmFile(string xmlFolder)
         {
             List<XmlNode> nodes = getNodes();
-
             XmlDocument doc = new XmlDocument();
             XmlDeclaration xmldecl = doc.CreateXmlDeclaration("1.0", "UTF-8", null);
             XmlNode dmodule = doc.CreateElement("dmodule");
@@ -141,7 +140,6 @@ namespace AntennaHouseBusinessLayer.DataModuleCreation
             XmlAttribute year = doc.CreateAttribute("year");
             year.InnerText = nodes[1].Attributes["year"].InnerText;
             issueDate.Attributes.Append(year);
-
             dmAddressItems.AppendChild(issueDate);
 
             //dmTitle-----------------------------------------------------------
@@ -149,8 +147,7 @@ namespace AntennaHouseBusinessLayer.DataModuleCreation
             XmlNode dmTitle = doc.CreateElement("dmTitle");
 
             XmlNode techName = doc.CreateElement("techName");
-            techName.InnerText = "Electronic engine control";
-
+            techName.InnerText = nodes[2].InnerText;
             XmlNode infoName = doc.CreateElement("infoName");
             infoName.InnerText = "Numerical index";
             dmTitle.AppendChild(techName);
@@ -457,9 +454,11 @@ namespace AntennaHouseBusinessLayer.DataModuleCreation
             doc.Load(DmFiles[0].Replace(@"\", "/"));
             XmlNode dmCode = doc.SelectSingleNode("descendant::dmCode[1]");
             XmlNode issueDate = doc.SelectSingleNode("descendant::issueDate[1]");
+            XmlNode techName = doc.SelectSingleNode("descendant::techName[1]");
             List<XmlNode> list = new List<XmlNode>();
             list.Add(dmCode);
             list.Add(issueDate);
+            list.Add(techName);
             foreach (string file in DmFiles)
             {
                 if (!file.Contains("-942A-") && !file.Contains("-014A-"))

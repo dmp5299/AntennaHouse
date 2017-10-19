@@ -23,10 +23,11 @@ namespace AntennaHouseBusinessLayer.Projects.CMM
 {
     public class Utas
     {
-        public static PdfFile buildPdf(string pmFile, string project, string title, string subProject = null)
+        public static PdfFile buildPdf(string pmFile, string project, string title, Boolean footerDate, string subProject = null)
         {
             System.Web.HttpContext.Current.Session["subProject"] = subProject;
             System.Web.HttpContext.Current.Session["TitleInfo"] = title;
+            System.Web.HttpContext.Current.Session["footerDate"] = footerDate;
             Factory factory = new Factory();
             if (XmlOperations.CheckForDm(pmFile, "942"))
             {

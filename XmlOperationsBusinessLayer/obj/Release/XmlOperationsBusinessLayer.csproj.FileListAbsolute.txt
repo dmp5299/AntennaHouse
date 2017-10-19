@@ -8,3 +8,8 @@ C:\Users\dpothier\Documents\AntennHouse-Development\AntennaHouse\XmlOperationsBu
 C:\Users\dpothier\Documents\AntennHouse-Development\AntennaHouse\XmlOperationsBusinessLayer\obj\Release\XmlOperationsBusinessLayer.csprojResolveAssemblyReference.cache
 C:\Users\dpothier\Documents\AntennHouse-Development\AntennaHouse\XmlOperationsBusinessLayer\obj\Release\XmlOperationsBusinessLayer.dll
 C:\Users\dpothier\Documents\AntennHouse-Development\AntennaHouse\XmlOperationsBusinessLayer\obj\Release\XmlOperationsBusinessLayer.pdb
+C:\Users\dpothier\Documents\AntennaHouse-ProductionTest\AntennaHouse\XmlOperationsBusinessLayer\bin\Release\XmlOperationsBusinessLayer.dll
+C:\Users\dpothier\Documents\AntennaHouse-ProductionTest\AntennaHouse\XmlOperationsBusinessLayer\bin\Release\XmlOperationsBusinessLayer.pdb
+C:\Users\dpothier\Documents\AntennaHouse-ProductionTest\AntennaHouse\XmlOperationsBusinessLayer\obj\Release\XmlOperationsBusinessLayer.csprojResolveAssemblyReference.cache
+C:\Users\dpothier\Documents\AntennaHouse-ProductionTest\AntennaHouse\XmlOperationsBusinessLayer\obj\Release\XmlOperationsBusinessLayer.dll
+C:\Users\dpothier\Documents\AntennaHouse-ProductionTest\AntennaHouse\XmlOperationsBusinessLayer\obj\Release\XmlOperationsBusinessLayer.pdb

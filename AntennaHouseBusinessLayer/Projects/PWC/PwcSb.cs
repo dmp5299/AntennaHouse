@@ -34,7 +34,15 @@ namespace AntennaHouseBusinessLayer.Projects.PWC
             {
                 foreach (string fileEntry in fileEntries)
                 {
-                    PdfFile doc = buildPdf(fileEntry, project, subProject);
+                    PdfFile doc = null;
+                    try
+                    {
+                        doc = buildPdf(fileEntry, project, subProject);
+                    }
+                    catch(Exception e)
+                    {
+                        throw new Exception("Exception in file " + fileEntry + ": " + e.Message);
+                    }
                     string[] xml = fileEntry.Split('\\');
                     string xmlFile1 = xml[xml.Length - 1];
                     xmlFile1 = xmlFile1.Replace(".XML", ".pdf");

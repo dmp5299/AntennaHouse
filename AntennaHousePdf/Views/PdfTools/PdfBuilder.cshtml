@@ -11,7 +11,7 @@
             @Html.Partial("_Header")
             <div style="width:30%;margin: 0 auto;background-color:white;">
 
-                @using (Html.BeginForm("Index", "PdfBuilder", FormMethod.Post, new { enctype = "multipart/form-data", onsubmit = "return checkFiles()" }
+                @using (Html.BeginForm("PdfBuilder", "PdfTools", FormMethod.Post, new { enctype = "multipart/form-data", onsubmit = "return checkFiles()" }
             ))
                 {
                     @Html.ValidationSummary()

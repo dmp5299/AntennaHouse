@@ -30,6 +30,9 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="EPPlus">
+      <HintPath>..\..\..\..\Downloads\DotNet4\EPPlus.dll</HintPath>
+    </Reference>
     <Reference Include="IKVM.OpenJDK.Security">
       <HintPath>..\..\..\..\..\inetpub\wwwroot\Saxonica\SaxonPE9.7N\bin\IKVM.OpenJDK.Security.dll</HintPath>
     </Reference>
@@ -96,11 +99,13 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="CommendExtraction\Comment.cs" />
     <Compile Include="Factories\BuildDmBuilder.cs" />
     <Compile Include="Factories\FileUploadFactory.cs" />
     <Compile Include="Factories\XmlPopulatorFactory.cs" />
     <Compile Include="FiftyThreeK\FiftyThreeKOps.cs" />
     <Compile Include="FileUtils\FileOperations.cs" />
+    <Compile Include="FileUtils\UploadPdfFiles.cs" />
     <Compile Include="FileUtils\UploadSgmlFiles.cs" />
     <Compile Include="Interfaces\IBuildDm.cs" />
     <Compile Include="Interfaces\IBuildPdf.cs" />
@@ -116,12 +121,14 @@
     <Compile Include="DataModuleCreation\NumIndexDm4Point1.cs" />
     <Compile Include="Projects\4PointOne\Pratt.cs" />
     <Compile Include="Projects\Acrolinx\AcroLinx.cs" />
+    <Compile Include="Projects\Comac\Comac.cs" />
     <Compile Include="Projects\FiftyThreeK\FiftyThreeK.cs" />
     <Compile Include="Projects\CMM\Utas.cs" />
     <Compile Include="Projects\PWC\PwcSb.cs" />
     <Compile Include="Projects\Rolls-Royce\RollysRoyce.cs" />
     <Compile Include="Projects\SB\UTC.cs" />
     <Compile Include="SaxonExtensions\ATAExt.cs" />
+    <Compile Include="SaxonExtensions\FooterDate.cs" />
     <Compile Include="SaxonExtensions\UtasTitlePage.cs" />
     <Compile Include="XmlObjects\ConvertedXmlFile.cs" />
     <Compile Include="XmlObjects\RefDm.cs" />
@@ -132,6 +139,7 @@
     <Compile Include="DataModuleCreation\NumIndexDm.cs" />
     <Compile Include="FOUtils\PdfFile.cs" />
     <Compile Include="XmlUtils\PmDate.cs" />
+    <Compile Include="XmlUtils\PwcBrex.cs" />
     <Compile Include="XmlUtils\References.cs" />
     <Compile Include="FileUtils\ReplacementOperations.cs" />
     <Compile Include="FiftyThreeK\SuppliesPopulator.cs" />

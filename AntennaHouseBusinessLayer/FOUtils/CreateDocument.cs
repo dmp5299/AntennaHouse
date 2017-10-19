@@ -36,6 +36,7 @@ namespace AntennaHouseBusinessLayer.FOUtils
             processor.RegisterExtensionFunction(new AntennaHousePdf.SaxonExtensions.GetReferences());
             processor.RegisterExtensionFunction(new AntennaHousePdf.SaxonExtensions.ATAExt());
             processor.RegisterExtensionFunction(new AntennaHousePdf.SaxonExtensions.UtasTitlePage());
+            processor.RegisterExtensionFunction(new AntennaHousePdf.SaxonExtensions.FooterDate());
             return processor;
         }
         

@@ -67,7 +67,14 @@ namespace AntennaHouseBusinessLayer.XmlUtils
                 {
                     XmlDocument dmodule = new XmlDocument();
                     dmodule.XmlResolver = new MyXmlUrlResolver();
-                    dmodule.Load(xmlFolder + "/" + file);
+                    try
+                    {
+                        dmodule.Load(xmlFolder + "/" + file);
+                    }
+                    catch(Exception e)
+                    {
+                        throw new XmlException("Error in file " + file + ": " + e.Message);
+                    }
                     if(dmodule.SelectSingleNode("descendant::refs") != null)
                     {
                         XmlNode refs = dmodule.SelectSingleNode("descendant::refs");
